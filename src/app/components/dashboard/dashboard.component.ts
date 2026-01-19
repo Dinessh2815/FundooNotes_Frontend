@@ -47,12 +47,15 @@ export class DashboardComponent implements OnInit {
   loadNotes(): void {
     this.noteService.getAllNotes().subscribe({
       next: (notes) => {
+        console.log('Fetched notes:', notes);
         this.notes = notes.filter(n => !n.isDeleted && !n.isArchived);
         this.pinnedNotes = this.notes.filter(n => n.isPinned);
         this.otherNotes = this.notes.filter(n => !n.isPinned);
+        console.log('Filtered notes:', { total: this.notes.length, pinned: this.pinnedNotes.length, other: this.otherNotes.length });
       },
       error: (error) => {
         console.error('Error loading notes:', error);
+        alert('Failed to load notes. Please check if backend is running on https://localhost:7278');
       }
     });
   }
@@ -75,14 +78,18 @@ export class DashboardComponent implements OnInit {
       return;
     }
 
+    console.log('Creating note:', this.newNote);
+
     this.noteService.createNote(this.newNote).subscribe({
-      next: () => {
+      next: (response) => {
+        console.log('Note created successfully:', response);
         this.loadNotes();
         this.resetNewNote();
         this.isCreateNoteExpanded = false;
       },
       error: (error) => {
         console.error('Error creating note:', error);
+        alert('Failed to create note. Please check if backend is running.');
       }
     });
   }
@@ -175,7 +182,10 @@ export class DashboardComponent implements OnInit {
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
     if (this.isCreateNoteExpanded) {
-      const clickedInside = this.elementRef.nativeElement.querySelector('.create-note-form')?.contains(event.target);
+      const createForm = this.elementRef.nativeElement.querySelector('.create-note-form');
+      const takeNoteBox = this.elementRef.nativeElement.querySelector('.take-note');
+      const clickedInside = createForm?.contains(event.target) || takeNoteBox?.contains(event.target);
+      
       if (!clickedInside) {
         this.closeCreateNote();
       }

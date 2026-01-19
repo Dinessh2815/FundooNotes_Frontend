@@ -22,7 +22,7 @@ export class NoteService {
     });
 
     if (isPlatformBrowser(this.platformId)) {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('auth_token');
       if (token) {
         headers = headers.set('Authorization', `Bearer ${token}`);
       }
@@ -36,7 +36,10 @@ export class NoteService {
   }
 
   createNote(note: CreateNoteRequest): Observable<any> {
-    return this.http.post(this.apiUrl, note, { headers: this.getHeaders() });
+    return this.http.post(this.apiUrl, note, { 
+      headers: this.getHeaders(),
+      responseType: 'text'
+    });
   }
 
   updateNote(noteId: number, note: UpdateNoteRequest): Observable<any> {
