@@ -39,6 +39,14 @@ export class AuthService {
     );
   }
 
+  forgotPassword(data: { email: string }): Observable<string> {
+    return this.http.post(`${this.apiUrl}/forgot-password`, data, { responseType: 'text' });
+  }
+
+  resetPassword(data: { token: string; newPassword: string }): Observable<string> {
+    return this.http.post(`${this.apiUrl}/reset-password`, data, { responseType: 'text' });
+  }
+
   logout(): void {
     if (this.isBrowser) {
       localStorage.removeItem(this.tokenKey);

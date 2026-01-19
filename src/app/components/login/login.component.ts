@@ -28,10 +28,6 @@ export class LoginComponent {
     });
   }
 
-  togglePasswordVisibility(): void {
-    this.showPassword = !this.showPassword;
-  }
-
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.isLoading = true;

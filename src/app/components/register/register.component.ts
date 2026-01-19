@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, RouterLink],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
@@ -17,7 +17,6 @@ export class RegisterComponent {
   successMessage: string = '';
   isLoading: boolean = false;
   showPassword: boolean = false;
-  showConfirmPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -25,9 +24,10 @@ export class RegisterComponent {
     private router: Router
   ) {
     this.registerForm = this.fb.group({
-      fullName: ['', [Validators.required, Validators.maxLength(100)]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      username: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required]]
     }, { validators: this.passwordMatchValidator });
   }
@@ -43,21 +43,18 @@ export class RegisterComponent {
     return null;
   }
 
-  togglePasswordVisibility(field: string): void {
-    if (field === 'password') {
-      this.showPassword = !this.showPassword;
-    } else {
-      this.showConfirmPassword = !this.showConfirmPassword;
-    }
-  }
-
   onSubmit(): void {
     if (this.registerForm.valid) {
       this.isLoading = true;
       this.errorMessage = '';
       this.successMessage = '';
       
-      const { confirmPassword, ...registerData } = this.registerForm.value;
+      const { confirmPassword, firstName, lastName, username, ...rest } = this.registerForm.value;
+      const registerData = {
+        fullName: `${firstName} ${lastName}`,
+        email: `${username}@gmail.com`, // Simple conversion for demo
+        password: rest.password
+      };
       
       this.authService.register(registerData).subscribe({
         next: (response) => {
@@ -86,12 +83,16 @@ export class RegisterComponent {
     });
   }
 
-  get fullName() {
-    return this.registerForm.get('fullName');
+  get firstName() {
+    return this.registerForm.get('firstName');
   }
 
-  get email() {
-    return this.registerForm.get('email');
+  get lastName() {
+    return this.registerForm.get('lastName');
+  }
+
+  get username() {
+    return this.registerForm.get('username');
   }
 
   get password() {
