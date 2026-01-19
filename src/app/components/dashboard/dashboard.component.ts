@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID, HostListener, ElementRef } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -35,6 +35,7 @@ export class DashboardComponent implements OnInit {
     private authService: AuthService,
     private noteService: NoteService,
     private router: Router,
+    private elementRef: ElementRef,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -63,9 +64,10 @@ export class DashboardComponent implements OnInit {
   closeCreateNote(): void {
     if (this.newNote.title || this.newNote.description) {
       this.createNote();
+    } else {
+      this.isCreateNoteExpanded = false;
+      this.resetNewNote();
     }
-    this.isCreateNoteExpanded = false;
-    this.resetNewNote();
   }
 
   createNote(): void {
@@ -77,6 +79,7 @@ export class DashboardComponent implements OnInit {
       next: () => {
         this.loadNotes();
         this.resetNewNote();
+        this.isCreateNoteExpanded = false;
       },
       error: (error) => {
         console.error('Error creating note:', error);
@@ -167,5 +170,15 @@ export class DashboardComponent implements OnInit {
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent): void {
+    if (this.isCreateNoteExpanded) {
+      const clickedInside = this.elementRef.nativeElement.querySelector('.create-note-form')?.contains(event.target);
+      if (!clickedInside) {
+        this.closeCreateNote();
+      }
+    }
   }
 }
