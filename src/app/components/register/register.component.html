@@ -1,0 +1,123 @@
+<div class="register-container">
+  <div class="register-card">
+    <div class="register-header">
+      <h1>Fundoo</h1>
+      <h2>Create your Fundoo Account</h2>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+      <div class="form-row">
+        <div class="form-group">
+          <input
+            type="text"
+            id="fullName"
+            formControlName="fullName"
+            placeholder="Full Name"
+            class="form-input"
+            [class.error]="fullName?.invalid && fullName?.touched"
+          />
+          <div class="error-message" *ngIf="fullName?.invalid && fullName?.touched">
+            <span *ngIf="fullName?.errors?.['required']">Full name is required</span>
+            <span *ngIf="fullName?.errors?.['maxlength']">Full name is too long</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="Email"
+          class="form-input"
+          [class.error]="email?.invalid && email?.touched"
+        />
+        <div class="help-text">You can use letters, numbers & periods</div>
+        <div class="error-message" *ngIf="email?.invalid && email?.touched">
+          <span *ngIf="email?.errors?.['required']">Email is required</span>
+          <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <div class="password-wrapper">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              id="password"
+              formControlName="password"
+              placeholder="Password"
+              class="form-input"
+              [class.error]="password?.invalid && password?.touched"
+            />
+            <button
+              type="button"
+              class="toggle-password"
+              (click)="togglePasswordVisibility('password')"
+            >
+              {{ showPassword ? 'Hide' : 'Show' }}
+            </button>
+          </div>
+          <div class="error-message" *ngIf="password?.invalid && password?.touched">
+            <span *ngIf="password?.errors?.['required']">Password is required</span>
+            <span *ngIf="password?.errors?.['minlength']">Use 6 or more characters</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="password-wrapper">
+            <input
+              [type]="showConfirmPassword ? 'text' : 'password'"
+              id="confirmPassword"
+              formControlName="confirmPassword"
+              placeholder="Confirm"
+              class="form-input"
+              [class.error]="confirmPassword?.invalid && confirmPassword?.touched"
+            />
+            <button
+              type="button"
+              class="toggle-password"
+              (click)="togglePasswordVisibility('confirm')"
+            >
+              {{ showConfirmPassword ? 'Hide' : 'Show' }}
+            </button>
+          </div>
+          <div class="error-message" *ngIf="confirmPassword?.invalid && confirmPassword?.touched">
+            <span *ngIf="confirmPassword?.errors?.['required']">Please confirm your password</span>
+            <span *ngIf="confirmPassword?.errors?.['passwordMismatch']">Passwords don't match</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="help-text password-hint">
+        Use 6 or more characters with a mix of letters, numbers & symbols
+      </div>
+
+      <div class="success-message" *ngIf="successMessage">
+        <span>{{ successMessage }}</span>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <div class="form-actions">
+        <a routerLink="/login" class="sign-in-link">Sign in instead</a>
+        <button type="submit" class="btn-primary" [disabled]="isLoading">
+          {{ isLoading ? 'Creating...' : 'Next' }}
+        </button>
+      </div>
+    </form>
+
+    <div class="register-footer">
+      <div class="language-selector">
+        <span>English (United States)</span>
+      </div>
+      <div class="footer-links">
+        <a href="#">Help</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+  </div>
+</div>
