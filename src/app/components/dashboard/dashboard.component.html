@@ -201,8 +201,8 @@
   </main>
 
   <!-- Edit Note Modal -->
-  <div class="modal-overlay" *ngIf="editingNote" (click)="cancelEditNote()">
-    <div class="modal-content" (click)="$event.stopPropagation()" [style.background-color]="editingNote.color">
+  <div class="modal-overlay" *ngIf="editingNote" (click)="onModalOverlayClick($event)">
+    <div class="modal-content" [style.background-color]="editingNote.color">
       <input 
         type="text" 
         [(ngModel)]="editNoteData.title" 
@@ -216,7 +216,7 @@
         rows="5"
       ></textarea>
       <div class="modal-actions">
-        <button class="close-btn" (click)="saveEditNote()">Close</button>
+        <button class="close-btn" (click)="closeEditNote()">Close</button>
       </div>
     </div>
   </div>

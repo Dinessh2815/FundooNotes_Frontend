@@ -114,12 +114,14 @@ export class DashboardComponent implements OnInit {
   saveEditNote(): void {
     if (this.editingNote) {
       this.noteService.updateNote(this.editingNote.noteId, this.editNoteData).subscribe({
-        next: () => {
+        next: (response) => {
+          console.log('Note updated successfully:', response);
           this.loadNotes();
           this.editingNote = null;
         },
         error: (error) => {
           console.error('Error updating note:', error);
+          alert('Failed to update note.');
         }
       });
     }
@@ -128,6 +130,14 @@ export class DashboardComponent implements OnInit {
   cancelEditNote(): void {
     this.editingNote = null;
     this.editNoteData = {};
+  }
+
+  closeEditNote(): void {
+    if (this.editingNote && (this.editNoteData.title || this.editNoteData.description)) {
+      this.saveEditNote();
+    } else {
+      this.cancelEditNote();
+    }
   }
 
   togglePin(note: Note): void {
@@ -189,6 +199,13 @@ export class DashboardComponent implements OnInit {
       if (!clickedInside) {
         this.closeCreateNote();
       }
+    }
+  }
+
+  onModalOverlayClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (target.classList.contains('modal-overlay')) {
+      this.closeEditNote();
     }
   }
 }

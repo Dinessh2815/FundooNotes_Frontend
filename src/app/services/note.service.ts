@@ -43,10 +43,16 @@ export class NoteService {
   }
 
   updateNote(noteId: number, note: UpdateNoteRequest): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${noteId}`, note, { headers: this.getHeaders() });
+    return this.http.put(`${this.apiUrl}/${noteId}`, note, { 
+      headers: this.getHeaders(),
+      responseType: 'text'
+    });
   }
 
   deleteNote(noteId: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${noteId}`, { headers: this.getHeaders() });
+    return this.http.delete(`${this.apiUrl}/${noteId}`, { 
+      headers: this.getHeaders(),
+      responseType: 'text'
+    });
   }
 }
