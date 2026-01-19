@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, PLATFORM_ID, HostListener, ElementRef } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { NoteService } from '../../services/note.service';
@@ -9,7 +9,7 @@ import { Note, CreateNoteRequest, UpdateNoteRequest } from '../../models/note.mo
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
@@ -55,7 +55,6 @@ export class DashboardComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading notes:', error);
-        alert('Failed to load notes. Please check if backend is running on https://localhost:7278');
       }
     });
   }
@@ -89,7 +88,7 @@ export class DashboardComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error creating note:', error);
-        alert('Failed to create note. Please check if backend is running.');
+
       }
     });
   }
@@ -121,7 +120,6 @@ export class DashboardComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error updating note:', error);
-          alert('Failed to update note.');
         }
       });
     }
@@ -163,8 +161,10 @@ export class DashboardComponent implements OnInit {
   }
 
   deleteNote(note: Note): void {
+    console.log('Deleting note:', note.noteId);
     this.noteService.deleteNote(note.noteId).subscribe({
-      next: () => {
+      next: (response) => {
+        console.log('Note deleted successfully:', response);
         this.loadNotes();
       },
       error: (error) => {

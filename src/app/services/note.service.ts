@@ -55,4 +55,22 @@ export class NoteService {
       responseType: 'text'
     });
   }
+
+  getDeletedNotes(): Observable<Note[]> {
+    return this.http.get<Note[]>(`${this.apiUrl}/deleted`, { headers: this.getHeaders() });
+  }
+
+  restoreNote(noteId: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${noteId}/restore`, {}, { 
+      headers: this.getHeaders(),
+      responseType: 'text'
+    });
+  }
+
+  permanentDeleteNote(noteId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${noteId}/permanent`, { 
+      headers: this.getHeaders(),
+      responseType: 'text'
+    });
+  }
 }
