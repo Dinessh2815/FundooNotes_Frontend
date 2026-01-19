@@ -38,17 +38,16 @@
 
         <div class="form-group">
           <input
-            type="text"
-            id="username"
-            formControlName="username"
-            placeholder="username*"
+            type="email"
+            id="email"
+            formControlName="email"
+            placeholder="Email*"
             class="form-input"
-            [class.error]="username?.invalid && username?.touched"
+            [class.error]="email?.invalid && email?.touched"
           />
-          <div class="help-text">You can use letters, numbers & periods</div>
-          <a href="#" class="use-email-link">Use my current email instead</a>
-          <div class="error-message" *ngIf="username?.invalid && username?.touched">
-            <span *ngIf="username?.errors?.['required']">Username is required</span>
+          <div class="error-message" *ngIf="email?.invalid && email?.touched">
+            <span *ngIf="email?.errors?.['required']">Email is required</span>
+            <span *ngIf="email?.errors?.['email']">Please enter a valid email address</span>
           </div>
         </div>
 
