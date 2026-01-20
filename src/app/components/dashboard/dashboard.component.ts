@@ -135,6 +135,29 @@ export class DashboardComponent implements OnInit {
     this.newNote.isPinned = !this.newNote.isPinned;
   }
 
+  archiveNewNote(): void {
+    if (!this.newNote.title && !this.newNote.description) {
+      return;
+    }
+
+    const noteWithArchive: CreateNoteRequest = {
+      ...this.newNote,
+      isArchived: true
+    };
+
+    this.noteService.createNote(noteWithArchive).subscribe({
+      next: (response) => {
+        console.log('Note archived successfully:', response);
+        this.loadNotes();
+        this.resetNewNote();
+        this.isCreateNoteExpanded = false;
+      },
+      error: (error) => {
+        console.error('Error archiving note:', error);
+      }
+    });
+  }
+
   startEditNote(note: Note): void {
     this.editingNote = { ...note };
     this.editNoteData = {
@@ -203,8 +226,16 @@ export class DashboardComponent implements OnInit {
   }
 
   archiveNote(note: Note): void {
-    this.noteService.updateNote(note.noteId, { isArchived: true }).subscribe({
+    this.noteService.updateNote(note.noteId, { 
+      title: note.title,
+      description: note.description,
+      color: note.color,
+      isArchived: true 
+    }).subscribe({
       next: () => {
+        if (this.editingNote?.noteId === note.noteId) {
+          this.editingNote = null;
+        }
         this.loadNotes();
       },
       error: (error) => {
