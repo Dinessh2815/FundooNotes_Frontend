@@ -327,7 +327,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -337,18 +337,20 @@
 .modal-content {
   background-color: #fff;
   border-radius: 8px;
-  padding: 16px;
+  padding: 0;
   width: 90%;
   max-width: 600px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   position: relative;
+  display: flex;
+  flex-direction: column;
 
   .modal-header {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     gap: 12px;
-    margin-bottom: 16px;
+    padding: 24px 24px 12px 24px;
   }
 
   .modal-title-input {
@@ -356,13 +358,14 @@
     border: none;
     outline: none;
     font-size: 22px;
-    font-weight: 400;
+    font-weight: 500;
     color: #202124;
-    font-family: 'Roboto', Arial, sans-serif;
+    font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
     background: transparent;
+    line-height: 1.5;
 
     &::placeholder {
-      color: #5f6368;
+      color: #80868b;
     }
   }
 
@@ -370,15 +373,17 @@
     width: 100%;
     border: none;
     outline: none;
-    font-size: 16px;
+    font-size: 14px;
     color: #202124;
     resize: none;
     font-family: 'Roboto', Arial, sans-serif;
-    margin-bottom: 16px;
     background: transparent;
+    padding: 12px 24px;
+    line-height: 1.5;
+    min-height: 120px;
 
     &::placeholder {
-      color: #5f6368;
+      color: #80868b;
     }
   }
 
@@ -386,12 +391,33 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 16px;
+    padding: 8px 16px;
+    margin-top: auto;
+    border-top: 1px solid transparent;
     position: relative;
 
     .modal-icons {
       display: flex;
       gap: 4px;
+      align-items: center;
+    }
+
+    .close-btn {
+      padding: 8px 24px;
+      border: none;
+      background: transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: #202124;
+      font-family: 'Google Sans', 'Roboto', Arial, sans-serif;
+      text-transform: capitalize;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: rgba(95, 99, 104, 0.039);
+      }
     }
 
     .color-picker-dropdown {
