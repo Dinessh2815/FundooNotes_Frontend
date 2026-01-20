@@ -38,10 +38,8 @@ export class BinComponent implements OnInit {
   loadDeletedNotes(): void {
     this.noteService.getDeletedNotes().subscribe({
       next: (notes) => {
-        console.log('Bin: Fetched notes:', notes.length);
-        this.deletedNotes = notes;
-        this.cdr.detectChanges();
-        console.log('Bin: After detectChanges, deletedNotes.length =', this.deletedNotes.length);
+        this.deletedNotes = [...notes]; // Create new array reference
+        this.cdr.markForCheck(); // Mark for check instead of detectChanges
       },
       error: (error) => {
         console.error('Error loading deleted notes:', error);

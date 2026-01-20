@@ -55,11 +55,11 @@ export class DashboardComponent implements OnInit {
     this.noteService.getAllNotes().subscribe({
       next: (notes) => {
         console.log('Fetched notes:', notes);
-        this.notes = notes.filter(n => !n.isDeleted && !n.isArchived);
-        this.pinnedNotes = this.notes.filter(n => n.isPinned);
-        this.otherNotes = this.notes.filter(n => !n.isPinned);
+        this.notes = [...notes.filter(n => !n.isDeleted && !n.isArchived)];
+        this.pinnedNotes = [...this.notes.filter(n => n.isPinned)];
+        this.otherNotes = [...this.notes.filter(n => !n.isPinned)];
         console.log('Filtered notes:', { total: this.notes.length, pinned: this.pinnedNotes.length, other: this.otherNotes.length });
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
       },
       error: (error) => {
         console.error('Error loading notes:', error);
