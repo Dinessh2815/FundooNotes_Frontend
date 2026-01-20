@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, PLATFORM_ID, HostListener, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID, HostListener, ElementRef, ChangeDetectorRef, afterNextRender } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -38,15 +38,17 @@ export class DashboardComponent implements OnInit {
     private elementRef: ElementRef,
     @Inject(PLATFORM_ID) private platformId: Object,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) {
+    // Load notes AFTER hydration completes
+    if (isPlatformBrowser(this.platformId)) {
+      afterNextRender(() => {
+        this.loadNotes();
+      });
+    }
+  }
 
   ngOnInit(): void {
     this.userEmail = this.authService.getEmail();
-    
-    // Only load notes in the browser, not during SSR
-    if (isPlatformBrowser(this.platformId)) {
-      this.loadNotes();
-    }
   }
 
   loadNotes(): void {
