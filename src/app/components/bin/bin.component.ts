@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID, ChangeDetectorRef, afterNextRender } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { NoteService } from '../../services/note.service';
@@ -20,21 +20,28 @@ export class BinComponent implements OnInit {
     private noteService: NoteService,
     private authService: AuthService,
     private router: Router,
+    private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  ) {
+    // Load notes AFTER hydration completes
+    if (isPlatformBrowser(this.platformId)) {
+      afterNextRender(() => {
+        this.loadDeletedNotes();
+      });
+    }
+  }
 
   ngOnInit(): void {
     this.userEmail = this.authService.getEmail();
-    this.loadDeletedNotes();
   }
 
   loadDeletedNotes(): void {
-    console.log('Loading deleted notes...');
     this.noteService.getDeletedNotes().subscribe({
       next: (notes) => {
-        console.log('Deleted notes fetched:', notes);
-        console.log('Number of deleted notes:', notes.length);
+        console.log('Bin: Fetched notes:', notes.length);
         this.deletedNotes = notes;
+        this.cdr.detectChanges();
+        console.log('Bin: After detectChanges, deletedNotes.length =', this.deletedNotes.length);
       },
       error: (error) => {
         console.error('Error loading deleted notes:', error);

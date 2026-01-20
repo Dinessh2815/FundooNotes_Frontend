@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, PLATFORM_ID, HostListener, ElementRef } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID, HostListener, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -36,12 +36,17 @@ export class DashboardComponent implements OnInit {
     private noteService: NoteService,
     private router: Router,
     private elementRef: ElementRef,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.userEmail = this.authService.getEmail();
-    this.loadNotes();
+    
+    // Only load notes in the browser, not during SSR
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadNotes();
+    }
   }
 
   loadNotes(): void {
@@ -52,6 +57,7 @@ export class DashboardComponent implements OnInit {
         this.pinnedNotes = this.notes.filter(n => n.isPinned);
         this.otherNotes = this.notes.filter(n => !n.isPinned);
         console.log('Filtered notes:', { total: this.notes.length, pinned: this.pinnedNotes.length, other: this.otherNotes.length });
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error loading notes:', error);
