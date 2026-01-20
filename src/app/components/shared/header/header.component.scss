@@ -1,0 +1,133 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background-color: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  z-index: 100;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 200px;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #5f6368;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(95, 99, 104, 0.1);
+  }
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+}
+
+.app-title {
+  font-size: 22px;
+  color: #5f6368;
+  font-weight: 400;
+}
+
+.header-center {
+  flex: 1;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #f1f3f4;
+  border-radius: 8px;
+  padding: 0 16px;
+  height: 48px;
+  transition: background-color 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    background-color: #e9ebed;
+  }
+
+  &:focus-within {
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24);
+  }
+}
+
+.search-icon {
+  color: #5f6368;
+  margin-right: 12px;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 16px;
+  color: #202124;
+
+  &::placeholder {
+    color: #5f6368;
+  }
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 200px;
+  justify-content: flex-end;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #5f6368;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(95, 99, 104, 0.1);
+  }
+}
+
+.user-btn {
+  background-color: #d1c4e9;
+  color: #4a148c;
+
+  &:hover {
+    background-color: #b39ddb;
+  }
+}
+
+.user-initial {
+  font-size: 14px;
+  font-weight: 500;
+}

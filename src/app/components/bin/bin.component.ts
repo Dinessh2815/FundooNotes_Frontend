@@ -4,17 +4,20 @@ import { Router, RouterLink } from '@angular/router';
 import { NoteService } from '../../services/note.service';
 import { AuthService } from '../../services/auth.service';
 import { Note } from '../../models/note.model';
+import { HeaderComponent } from '../shared/header/header.component';
+import { SidebarComponent } from '../shared/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-bin',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, HeaderComponent, SidebarComponent],
   templateUrl: './bin.component.html',
   styleUrls: ['./bin.component.scss']
 })
 export class BinComponent implements OnInit {
   deletedNotes: Note[] = [];
   userEmail: string | null = null;
+  isSidebarExpanded: boolean = true;
 
   constructor(
     private noteService: NoteService,
@@ -76,5 +79,9 @@ export class BinComponent implements OnInit {
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  toggleSidebar(): void {
+    this.isSidebarExpanded = !this.isSidebarExpanded;
   }
 }
