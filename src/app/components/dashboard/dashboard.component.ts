@@ -22,6 +22,22 @@ export class DashboardComponent implements OnInit {
   otherNotes: Note[] = [];
   isSidebarExpanded: boolean = true;
   
+  // Color palette - Google Keep colors
+  colorPalette = [
+    { name: 'Default', value: '#ffffff' },
+    { name: 'Red', value: '#f28b82' },
+    { name: 'Orange', value: '#fbbc04' },
+    { name: 'Yellow', value: '#fff475' },
+    { name: 'Green', value: '#ccff90' },
+    { name: 'Teal', value: '#a7ffeb' },
+    { name: 'Blue', value: '#cbf0f8' },
+    { name: 'Dark Blue', value: '#aecbfa' },
+    { name: 'Purple', value: '#d7aefb' },
+    { name: 'Pink', value: '#fdcfe8' },
+    { name: 'Brown', value: '#e6c9a8' },
+    { name: 'Gray', value: '#e8eaed' }
+  ];
+  
   // Create note form
   isCreateNoteExpanded: boolean = false;
   newNote: CreateNoteRequest = {
@@ -33,6 +49,7 @@ export class DashboardComponent implements OnInit {
   // Edit note
   editingNote: Note | null = null;
   editNoteData: UpdateNoteRequest = {};
+  showColorPicker: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -193,6 +210,24 @@ export class DashboardComponent implements OnInit {
         console.error('Error changing color:', error);
       }
     });
+  }
+
+  changeEditNoteColor(color: string): void {
+    this.editNoteData.color = color;
+    if (this.editingNote) {
+      this.editingNote.color = color;
+    }
+  }
+
+  changeNewNoteColor(color: string): void {
+    this.newNote.color = color;
+  }
+
+  toggleColorPicker(event?: Event): void {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.showColorPicker = !this.showColorPicker;
   }
 
   logout(): void {
