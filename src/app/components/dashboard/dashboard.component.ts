@@ -43,7 +43,8 @@ export class DashboardComponent implements OnInit {
   newNote: CreateNoteRequest = {
     title: '',
     description: '',
-    color: '#ffffff'
+    color: '#ffffff',
+    isPinned: false
   };
   
   // Edit note
@@ -125,8 +126,13 @@ export class DashboardComponent implements OnInit {
     this.newNote = {
       title: '',
       description: '',
-      color: '#ffffff'
+      color: '#ffffff',
+      isPinned: false
     };
+  }
+
+  toggleNewNotePin(): void {
+    this.newNote.isPinned = !this.newNote.isPinned;
   }
 
   startEditNote(note: Note): void {
@@ -167,12 +173,22 @@ export class DashboardComponent implements OnInit {
   }
 
   togglePin(note: Note): void {
-    this.noteService.updateNote(note.noteId, { isPinned: !note.isPinned }).subscribe({
+    console.log('Toggling pin for note:', note.noteId, 'Current isPinned:', note.isPinned, 'New value:', !note.isPinned);
+    const updateData: UpdateNoteRequest = {
+      title: note.title,
+      description: note.description,
+      color: note.color,
+      isPinned: !note.isPinned
+    };
+    this.noteService.updateNote(note.noteId, updateData).subscribe({
       next: () => {
+        console.log('Pin toggled successfully');
         this.loadNotes();
       },
       error: (error) => {
         console.error('Error toggling pin:', error);
+        console.error('Error details:', error.error);
+        console.error('Status:', error.status);
       }
     });
   }
@@ -241,6 +257,18 @@ export class DashboardComponent implements OnInit {
 
   @HostListener('document:click', ['$event'])
   onClickOutside(event: MouseEvent): void {
+    // Close color picker when clicking outside
+    if (this.showColorPicker) {
+      const colorPicker = this.elementRef.nativeElement.querySelector('.color-picker-dropdown');
+      const colorBtn = this.elementRef.nativeElement.querySelector('.color-btn');
+      const clickedInside = colorPicker?.contains(event.target) || colorBtn?.contains(event.target);
+      
+      if (!clickedInside) {
+        this.showColorPicker = false;
+      }
+    }
+    
+    // Close create note form when clicking outside
     if (this.isCreateNoteExpanded) {
       const createForm = this.elementRef.nativeElement.querySelector('.create-note-form');
       const takeNoteBox = this.elementRef.nativeElement.querySelector('.take-note');

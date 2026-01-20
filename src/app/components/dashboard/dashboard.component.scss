@@ -68,15 +68,23 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   background-color: #fff;
 
+  .create-note-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
   .note-title-input {
-    width: 100%;
+    flex: 1;
     border: none;
     outline: none;
     font-size: 16px;
     font-weight: 500;
     color: #202124;
-    margin-bottom: 12px;
     font-family: 'Roboto', Arial, sans-serif;
+    background: transparent;
 
     &::placeholder {
       color: #5f6368;
@@ -92,6 +100,7 @@
     resize: none;
     font-family: 'Roboto', Arial, sans-serif;
     margin-bottom: 12px;
+    background: transparent;
 
     &::placeholder {
       color: #5f6368;
@@ -148,49 +157,56 @@
 }
 
 // Color Picker
-.color-picker {
+.color-btn-wrapper {
+  position: relative;
+}
+
+.color-picker-dropdown {
   position: absolute;
-  bottom: 50px;
+  bottom: 40px;
   left: 0;
   background: #fff;
   border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   padding: 8px;
   display: flex;
-  gap: 6px;
+  flex-direction: row;
   flex-wrap: wrap;
-  max-width: 180px;
+  gap: 6px;
   z-index: 1000;
+  width: 216px;
 }
 
 .color-option {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  border: 2px solid transparent;
+  border: 2px solid #fff;
+  outline: 1px solid #dadce0;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
   position: relative;
+  flex-shrink: 0;
 
   &:hover {
-    border-color: #5f6368;
+    outline: 2px solid #5f6368;
     transform: scale(1.1);
   }
 
   &.selected {
-    border-color: #000;
+    outline: 2px solid #000;
     
     svg {
-      color: #000;
+      color: rgba(0, 0, 0, 0.87);
     }
   }
 
   svg {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
   }
 }
 
@@ -236,11 +252,11 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24);
 
     .note-footer {
-      opacity: 1;
+      opacity: 1 !important;
     }
 
     .pin-btn {
-      opacity: 1;
+      opacity: 1 !important;
     }
   }
 
@@ -257,15 +273,18 @@
       color: #202124;
       margin: 0;
       word-wrap: break-word;
-      padding-right: 8px;
+      padding-right: 40px;
     }
 
     .pin-btn {
       opacity: 0;
       transition: opacity 0.2s;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
 
-      &.pinned {
-        opacity: 1;
+      &:hover {
+        background-color: rgba(95, 99, 104, 0.157) !important;
       }
     }
   }
@@ -328,7 +347,7 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 8px;
+    gap: 12px;
     margin-bottom: 16px;
   }
 
@@ -340,6 +359,7 @@
     font-weight: 400;
     color: #202124;
     font-family: 'Roboto', Arial, sans-serif;
+    background: transparent;
 
     &::placeholder {
       color: #5f6368;
@@ -355,6 +375,7 @@
     resize: none;
     font-family: 'Roboto', Arial, sans-serif;
     margin-bottom: 16px;
+    background: transparent;
 
     &::placeholder {
       color: #5f6368;
@@ -373,7 +394,7 @@
       gap: 4px;
     }
 
-    .color-picker {
+    .color-picker-dropdown {
       bottom: auto;
       top: 40px;
     }
