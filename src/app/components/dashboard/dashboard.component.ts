@@ -174,11 +174,17 @@ export class DashboardComponent implements OnInit {
 
   togglePin(note: Note): void {
     console.log('Toggling pin for note:', note.noteId, 'Current isPinned:', note.isPinned, 'New value:', !note.isPinned);
+    
+    // Update UI immediately for instant feedback
+    const newPinState = !note.isPinned;
+    note.isPinned = newPinState;
+    this.cdr.markForCheck();
+    
     const updateData: UpdateNoteRequest = {
       title: note.title,
       description: note.description,
       color: note.color,
-      isPinned: !note.isPinned
+      isPinned: newPinState
     };
     this.noteService.updateNote(note.noteId, updateData).subscribe({
       next: () => {
@@ -189,6 +195,9 @@ export class DashboardComponent implements OnInit {
         console.error('Error toggling pin:', error);
         console.error('Error details:', error.error);
         console.error('Status:', error.status);
+        // Revert on error
+        note.isPinned = !newPinState;
+        this.cdr.markForCheck();
       }
     });
   }
