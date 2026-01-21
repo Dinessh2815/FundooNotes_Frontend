@@ -286,7 +286,7 @@
       ></textarea>
       
       <!-- Note Labels in Edit Modal -->
-      <div class="note-labels" *ngIf="getNoteLabels(editingNote.noteId).length > 0" style="margin: 8px 0;">
+      <div class="note-labels" *ngIf="getNoteLabels(editingNote.noteId).length > 0">
         <span *ngFor="let label of getNoteLabels(editingNote.noteId)" class="label-chip" (click)="$event.stopPropagation()">
           <span class="label-text">{{ label.name }}</span>
           <button class="label-close" (click)="removeLabelFromNote(editingNote.noteId, label.labelId)" aria-label="Remove label" title="Remove label">
@@ -297,7 +297,7 @@
         </span>
       </div>
       
-      <div class="modal-actions">
+      <div class="modal-actions" [class.has-separator]="getNoteLabels(editingNote.noteId).length === 0">
         <div class="modal-icons">
           <div class="color-btn-wrapper">
             <button class="icon-btn-small color-btn" aria-label="Change color" (click)="toggleColorPicker($event)">
