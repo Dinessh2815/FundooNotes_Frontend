@@ -32,7 +32,7 @@ export class HeaderComponent {
   filteredNotes: Note[] = [];
   isDarkMode: boolean = false;
   
-  colorPalette = [
+  lightColorPalette = [
     { name: 'Default', value: '#ffffff' },
     { name: 'Red', value: '#f28b82' },
     { name: 'Orange', value: '#fbbc04' },
@@ -46,6 +46,37 @@ export class HeaderComponent {
     { name: 'Brown', value: '#e6c9a8' },
     { name: 'Gray', value: '#e8eaed' }
   ];
+
+  darkColorPalette = [
+    { name: 'Default', value: '#202124' },
+    { name: 'Dark Red', value: '#5c2b29' },
+    { name: 'Dark Orange', value: '#614a19' },
+    { name: 'Dark Yellow', value: '#635d19' },
+    { name: 'Dark Green', value: '#345920' },
+    { name: 'Dark Teal', value: '#16504b' },
+    { name: 'Dark Blue', value: '#2d555e' },
+    { name: 'Dark Navy', value: '#1e3a5f' },
+    { name: 'Dark Purple', value: '#42275e' },
+    { name: 'Dark Pink', value: '#5b2245' },
+    { name: 'Dark Brown', value: '#442f19' },
+    { name: 'Dark Gray', value: '#3c3f43' }
+  ];
+
+  get colorPalette() {
+    return this.isDarkMode ? this.darkColorPalette : this.lightColorPalette;
+  }
+
+  // Color mapping helper
+  convertColorToTheme(color: string, toDarkMode: boolean): string {
+    const sourceArray = toDarkMode ? this.lightColorPalette : this.darkColorPalette;
+    const targetArray = toDarkMode ? this.darkColorPalette : this.lightColorPalette;
+    
+    const index = sourceArray.findIndex(c => c.value.toLowerCase() === color.toLowerCase());
+    if (index !== -1 && targetArray[index]) {
+      return targetArray[index].value;
+    }
+    return color;
+  }
 
   constructor(
     private authService: AuthService,

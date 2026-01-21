@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { NoteService } from '../../services/note.service';
 import { LabelService } from '../../services/label.service';
+import { ThemeService } from '../../services/theme.service';
 import { Note, CreateNoteRequest, UpdateNoteRequest } from '../../models/note.model';
 import { Label } from '../../models/label.model';
 import { HeaderComponent } from '../shared/header/header.component';
@@ -24,9 +25,10 @@ export class DashboardComponent implements OnInit {
   pinnedNotes: Note[] = [];
   otherNotes: Note[] = [];
   isSidebarExpanded: boolean = true;
+  isDarkMode: boolean = false;
   
   // Color palette - Google Keep colors
-  colorPalette = [
+  lightColorPalette = [
     { name: 'Default', value: '#ffffff' },
     { name: 'Red', value: '#f28b82' },
     { name: 'Orange', value: '#fbbc04' },
@@ -40,6 +42,72 @@ export class DashboardComponent implements OnInit {
     { name: 'Brown', value: '#e6c9a8' },
     { name: 'Gray', value: '#e8eaed' }
   ];
+
+  darkColorPalette = [
+    { name: 'Default', value: '#202124' },
+    { name: 'Dark Red', value: '#5c2b29' },
+    { name: 'Dark Orange', value: '#614a19' },
+    { name: 'Dark Yellow', value: '#635d19' },
+    { name: 'Dark Green', value: '#345920' },
+    { name: 'Dark Teal', value: '#16504b' },
+    { name: 'Dark Blue', value: '#2d555e' },
+    { name: 'Dark Navy', value: '#1e3a5f' },
+    { name: 'Dark Purple', value: '#42275e' },
+    { name: 'Dark Pink', value: '#5b2245' },
+    { name: 'Dark Brown', value: '#442f19' },
+    { name: 'Dark Gray', value: '#3c3f43' }
+  ];
+
+  get colorPalette() {
+    return this.isDarkMode ? this.darkColorPalette : this.lightColorPalette;
+  }
+
+  // Color mapping methods
+  convertColorToTheme(color: string, toDarkMode: boolean): string {
+    const sourceArray = toDarkMode ? this.lightColorPalette : this.darkColorPalette;
+    const targetArray = toDarkMode ? this.darkColorPalette : this.lightColorPalette;
+    
+    const index = sourceArray.findIndex(c => c.value.toLowerCase() === color.toLowerCase());
+    if (index !== -1 && targetArray[index]) {
+      return targetArray[index].value;
+    }
+    return color; // Return original if not found
+  }
+
+  // Convert color for display based on current theme
+  convertColorForDisplay(color: string): string {
+    // If in dark mode, check if color is a light color and convert it
+    if (this.isDarkMode) {
+      const lightIndex = this.lightColorPalette.findIndex(c => c.value.toLowerCase() === color.toLowerCase());
+      if (lightIndex !== -1 && this.darkColorPalette[lightIndex]) {
+        return this.darkColorPalette[lightIndex].value;
+      }
+    } else {
+      // If in light mode, check if color is a dark color and convert it
+      const darkIndex = this.darkColorPalette.findIndex(c => c.value.toLowerCase() === color.toLowerCase());
+      if (darkIndex !== -1 && this.lightColorPalette[darkIndex]) {
+        return this.lightColorPalette[darkIndex].value;
+      }
+    }
+    return color;
+  }
+
+  // Convert color back to storage format (always store in light mode format)
+  convertColorForStorage(displayColor: string): string {
+    if (this.isDarkMode) {
+      // Convert dark color back to light equivalent for storage
+      const darkIndex = this.darkColorPalette.findIndex(c => c.value.toLowerCase() === displayColor.toLowerCase());
+      if (darkIndex !== -1 && this.lightColorPalette[darkIndex]) {
+        return this.lightColorPalette[darkIndex].value;
+      }
+    }
+    return displayColor;
+  }
+
+  convertAllNotesColors(toDarkMode: boolean): void {
+    // Just reload notes to apply new theme colors
+    this.loadNotes();
+  }
   
   // Create note form
   isCreateNoteExpanded: boolean = false;
@@ -72,6 +140,7 @@ export class DashboardComponent implements OnInit {
     private authService: AuthService,
     private noteService: NoteService,
     private labelService: LabelService,
+    private themeService: ThemeService,
     private router: Router,
     private elementRef: ElementRef,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -88,6 +157,19 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.userEmail = this.authService.getEmail();
     this.checkLabelInfoMessageStatus();
+    
+    // Subscribe to theme changes
+    this.themeService.darkMode$.subscribe(isDark => {
+      const previousMode = this.isDarkMode;
+      this.isDarkMode = isDark;
+      
+      // Convert colors only if theme actually changed
+      if (previousMode !== isDark) {
+        this.convertAllNotesColors(isDark);
+      }
+      
+      this.cdr.detectChanges();
+    });
   }
 
   checkLabelInfoMessageStatus(): void {
@@ -108,7 +190,14 @@ export class DashboardComponent implements OnInit {
     this.noteService.getAllNotes().subscribe({
       next: (notes) => {
         console.log('Fetched notes:', notes);
-        this.allNotes = [...notes.filter(n => !n.isDeleted && !n.isArchived)];
+        
+        // Convert colors based on current theme
+        const convertedNotes = notes.map(note => ({
+          ...note,
+          color: this.convertColorForDisplay(note.color || '#ffffff')
+        }));
+        
+        this.allNotes = [...convertedNotes.filter(n => !n.isDeleted && !n.isArchived)];
         this.applyFilters();
         
         // Load labels for all notes
@@ -273,7 +362,13 @@ export class DashboardComponent implements OnInit {
 
     console.log('Creating note:', this.newNote);
 
-    this.noteService.createNote(this.newNote).subscribe({
+    // Convert color to storage format before saving
+    const noteToCreate = {
+      ...this.newNote,
+      color: this.convertColorForStorage(this.newNote.color || '#ffffff')
+    };
+
+    this.noteService.createNote(noteToCreate).subscribe({
       next: (response) => {
         console.log('Note created successfully:', response);
         this.loadNotes();
@@ -291,7 +386,7 @@ export class DashboardComponent implements OnInit {
     this.newNote = {
       title: '',
       description: '',
-      color: '#ffffff',
+      color: this.isDarkMode ? this.darkColorPalette[0].value : this.lightColorPalette[0].value,
       isPinned: false
     };
   }
@@ -307,6 +402,7 @@ export class DashboardComponent implements OnInit {
 
     const noteWithArchive: CreateNoteRequest = {
       ...this.newNote,
+      color: this.convertColorForStorage(this.newNote.color || '#ffffff'),
       isArchived: true
     };
 
@@ -334,7 +430,13 @@ export class DashboardComponent implements OnInit {
 
   saveEditNote(): void {
     if (this.editingNote) {
-      this.noteService.updateNote(this.editingNote.noteId, this.editNoteData).subscribe({
+      // Convert color to storage format before saving
+      const dataToSave = {
+        ...this.editNoteData,
+        color: this.editNoteData.color ? this.convertColorForStorage(this.editNoteData.color) : undefined
+      };
+      
+      this.noteService.updateNote(this.editingNote.noteId, dataToSave).subscribe({
         next: (response) => {
           console.log('Note updated successfully:', response);
           this.loadNotes();
@@ -430,7 +532,7 @@ export class DashboardComponent implements OnInit {
     const updateData: UpdateNoteRequest = {
       title: note.title,
       description: note.description,
-      color: color
+      color: this.convertColorForStorage(color)
     };
     this.noteService.updateNote(note.noteId, updateData).subscribe({
       next: () => {
