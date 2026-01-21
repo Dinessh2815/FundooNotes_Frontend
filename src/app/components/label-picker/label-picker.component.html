@@ -1,0 +1,49 @@
+<div class="label-picker-backdrop" (click)="onBackdropClick($event)">
+  <div class="label-picker-content" (click)="$event.stopPropagation()">
+    <div class="picker-header">
+      <span>Label note</span>
+    </div>
+
+    <!-- Create new label -->
+    <div class="create-label-section">
+      <input 
+        type="text" 
+        [(ngModel)]="newLabelName"
+        (keyup.enter)="createAndAttachLabel()"
+        placeholder="Enter label name"
+        class="create-label-input"
+      />
+      <button 
+        *ngIf="newLabelName.trim()" 
+        class="icon-btn-small"
+        (click)="createAndAttachLabel()"
+        aria-label="Create"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24">
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Labels list with checkboxes -->
+    <div class="labels-list" *ngIf="allLabels.length > 0">
+      <label *ngFor="let label of allLabels" class="label-checkbox-item">
+        <input 
+          type="checkbox" 
+          [checked]="isLabelAttached(label.labelId)"
+          (change)="toggleLabel(label, $event)"
+        />
+        <svg width="20" height="20" viewBox="0 0 24 24" class="label-icon">
+          <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z" fill="currentColor"/>
+        </svg>
+        <span class="label-name">{{ label.name }}</span>
+      </label>
+    </div>
+
+    <!-- Info message for first time -->
+    <div class="info-message" *ngIf="showInfoMessage">
+      <p>You can also add labels by typing '#'.</p>
+      <button class="got-it-btn" (click)="onGotItClick()">Got it</button>
+    </div>
+  </div>
+</div>

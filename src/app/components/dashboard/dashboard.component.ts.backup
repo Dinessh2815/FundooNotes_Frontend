@@ -91,22 +91,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  dismissLabelInfoMessage(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('hasSeenLabelInfoMessage', 'true');
-      this.showLabelInfoMessage = false;
-    }
-  }
-
-  loadNotes(): void {
-    this.noteService.getAllNotes().subscribe({
-      next: (notes) => {
-        console.log('Fetched notes:', notes);
-        this.notes = [...notes.filter(n => !n.isDeleted && !n.isArchived)];
-        this.pinnedNotes = [...this.notes.filter(n => n.isPinned)];
-        this.otherNotes = [...this.notes.filter(n => !n.isPinned)];
-        console.log('Filtered notes:', { total: this.notes.length, pinned: this.pinnedNotes.length, other: this.otherNotes.length });
-        
+  dismis
         // Load labels for all notes
         this.notes.forEach(note => this.loadNoteLabels(note.noteId));
         
@@ -161,7 +146,22 @@ export class DashboardComponent implements OnInit {
 
   getAttachedLabelIds(noteId: number): number[] {
     const labels = this.noteLabels.get(noteId) || [];
-    return labels.map(l => l.labelId);
+    return labels.map(l => l.labelId
+
+  loadNotes(): void {
+    this.noteService.getAllNotes().subscribe({
+      next: (notes) => {
+        console.log('Fetched notes:', notes);
+        this.notes = [...notes.filter(n => !n.isDeleted && !n.isArchived)];
+        this.pinnedNotes = [...this.notes.filter(n => n.isPinned)];
+        this.otherNotes = [...this.notes.filter(n => !n.isPinned)];
+        console.log('Filtered notes:', { total: this.notes.length, pinned: this.pinnedNotes.length, other: this.otherNotes.length });
+        this.cdr.markForCheck();
+      },
+      error: (error) => {
+        console.error('Error loading notes:', error);
+      }
+    });
   }
 
   expandCreateNote(): void {

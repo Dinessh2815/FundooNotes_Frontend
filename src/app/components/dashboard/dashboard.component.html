@@ -110,7 +110,20 @@
             </button>
           </div>
           <p class="note-description">{{ note.description }}</p>
+          
+          <!-- Note Labels -->
+          <div class="note-labels" *ngIf="getNoteLabels(note.noteId).length > 0">
+            <span *ngFor="let label of getNoteLabels(note.noteId)" class="label-chip">
+              {{ label.name }}
+            </span>
+          </div>
+          
           <div class="note-footer" (click)="$event.stopPropagation()">
+            <button class="icon-btn-small" (click)="openLabelPicker(note, $event)" aria-label="Add label">
+              <svg width="18" height="18" viewBox="0 0 24 24">
+                <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z" fill="currentColor"/>
+              </svg>
+            </button>
             <button class="icon-btn-small" (click)="archiveNote(note)" aria-label="Archive">
               <svg width="18" height="18" viewBox="0 0 24 24">
                 <path d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27zM6.24 5h11.52l.83 1H5.42l.82-1zM5 19V8h14v11H5zm3-5h2.55v3h2.9v-3H16l-4-4z" fill="currentColor"/>
@@ -140,7 +153,20 @@
             </button>
           </div>
           <p class="note-description">{{ note.description }}</p>
+          
+          <!-- Note Labels -->
+          <div class="note-labels" *ngIf="getNoteLabels(note.noteId).length > 0">
+            <span *ngFor="let label of getNoteLabels(note.noteId)" class="label-chip">
+              {{ label.name }}
+            </span>
+          </div>
+          
           <div class="note-footer" (click)="$event.stopPropagation()">
+            <button class="icon-btn-small" (click)="openLabelPicker(note, $event)" aria-label="Add label">
+              <svg width="18" height="18" viewBox="0 0 24 24">
+                <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z" fill="currentColor"/>
+              </svg>
+            </button>
             <button class="icon-btn-small" (click)="archiveNote(note)" aria-label="Archive">
               <svg width="18" height="18" viewBox="0 0 24 24">
                 <path d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27zM6.24 5h11.52l.83 1H5.42l.82-1zM5 19V8h14v11H5zm3-5h2.55v3h2.9v-3H16l-4-4z" fill="currentColor"/>
@@ -234,4 +260,17 @@
     </div>
   </div>
 </div>
+
+<!-- Label Picker -->
+<app-label-picker 
+  *ngIf="showLabelPicker && labelPickerNoteId"
+  [noteId]="labelPickerNoteId"
+  [attachedLabelIds]="getAttachedLabelIds(labelPickerNoteId)"
+  [showInfoMessage]="showLabelInfoMessage"
+  [style.top]="labelPickerPosition.top"
+  [style.left]="labelPickerPosition.left"
+  (close)="closeLabelPicker()"
+  (labelsChanged)="onLabelsChanged()"
+  (dismissInfoMessage)="dismissLabelInfoMessage()">
+</app-label-picker>>
 

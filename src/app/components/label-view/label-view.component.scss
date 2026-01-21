@@ -1,0 +1,145 @@
+.label-view-container {
+  min-height: 100vh;
+  background-color: #fff;
+}
+
+.main-content {
+  margin-left: 280px;
+  margin-top: 64px;
+  padding: 24px;
+  transition: margin-left 0.2s ease-in-out;
+
+  &.sidebar-collapsed {
+    margin-left: 80px;
+  }
+}
+
+.label-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e0e0e0;
+
+  .label-icon {
+    color: #5f6368;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 400;
+    color: #202124;
+  }
+}
+
+.notes-section {
+  margin-top: 24px;
+}
+
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  padding: 8px;
+}
+
+.note-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.1s;
+
+  &:hover {
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
+    transform: translateY(-1px);
+  }
+}
+
+.note-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.note-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #202124;
+  flex: 1;
+}
+
+.note-description {
+  margin: 0;
+  font-size: 14px;
+  color: #202124;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.note-footer {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.note-card:hover .note-footer {
+  opacity: 1;
+}
+
+.icon-btn-small {
+  background: none;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5f6368;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(95, 99, 104, 0.1);
+  }
+}
+
+.pin-btn {
+  opacity: 0;
+  transition: opacity 0.2s;
+
+  &.pinned {
+    opacity: 1;
+  }
+}
+
+.note-card:hover .pin-btn {
+  opacity: 1;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+
+  svg {
+    margin-bottom: 16px;
+    opacity: 0.3;
+  }
+
+  p {
+    font-size: 18px;
+    color: #5f6368;
+    margin: 0;
+  }
+}

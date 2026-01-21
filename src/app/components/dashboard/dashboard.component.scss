@@ -297,6 +297,22 @@
     white-space: pre-wrap;
   }
 
+  .note-labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+
+    .label-chip {
+      background-color: rgba(0, 0, 0, 0.08);
+      border-radius: 12px;
+      padding: 4px 12px;
+      font-size: 12px;
+      color: #202124;
+      display: inline-block;
+    }
+  }
+
   .note-footer {
     display: flex;
     gap: 4px;

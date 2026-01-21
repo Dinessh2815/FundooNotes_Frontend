@@ -14,12 +14,23 @@
       <span *ngIf="isExpanded">Reminders</span>
     </a>
     
-    <a href="#" class="nav-item">
+    <a (click)="openEditLabelsModal()" class="nav-item" style="cursor: pointer;">
       <svg width="24" height="24" viewBox="0 0 24 24">
-        <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z" fill="currentColor"/>
+        <path d="M20.41 4.94l-1.35-1.35c-.78-.78-2.05-.78-2.83 0L13.4 6.41 14 7l1.41-1.41 1.41 1.41L14 10l.59.59 3.72-3.72 1.41 1.41-8.84 8.84-2.83-2.83-1.41 1.41 2.83 2.83c.78.78 2.05.78 2.83 0l8.08-8.08c.79-.78.79-2.05.01-2.83z" fill="currentColor"/>
+        <path d="M15.59 11.59l-1.41-1.41L3.51 20.85 2.1 19.44l-.71.71 2.12 2.12z" fill="currentColor"/>
       </svg>
       <span *ngIf="isExpanded">Edit labels</span>
     </a>
+    
+    <div class="labels-section" *ngIf="isExpanded && labels.length > 0">
+      <div class="labels-header">LABELS</div>
+      <a *ngFor="let label of labels" [routerLink]="['/label', label.labelId]" routerLinkActive="active" class="nav-item label-item">
+        <svg width="24" height="24" viewBox="0 0 24 24">
+          <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z" fill="currentColor"/>
+        </svg>
+        <span>{{ label.name }}</span>
+      </a>
+    </div>
     
     <a routerLink="/archive" routerLinkActive="active" class="nav-item">
       <svg width="24" height="24" viewBox="0 0 24 24">
@@ -37,3 +48,9 @@
     </a>
   </nav>
 </aside>
+
+<!-- Edit Labels Modal -->
+<app-edit-labels-modal 
+  *ngIf="showEditLabelsModal" 
+  (close)="closeEditLabelsModal()">
+</app-edit-labels-modal>

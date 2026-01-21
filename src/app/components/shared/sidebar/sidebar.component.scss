@@ -9,7 +9,7 @@
   padding-top: 8px;
   transition: width 0.2s ease-in-out, transform 0.2s ease-in-out;
   z-index: 50;
-  overflow: hidden;
+  overflow-y: auto;
 
   &.collapsed {
     width: 80px;
@@ -66,6 +66,25 @@
   }
 }
 
+.labels-section {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e0e0e0;
+
+  .labels-header {
+    padding: 8px 24px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #5f6368;
+    letter-spacing: 0.8px;
+  }
+
+  .label-item {
+    padding: 8px 24px;
+    gap: 24px;
+  }
+}
+
 .sidebar.collapsed .nav-item {
   justify-content: center;
   padding: 12px;
@@ -73,4 +92,8 @@
   svg {
     margin: 0;
   }
+}
+
+.sidebar.collapsed .labels-section {
+  display: none;
 }

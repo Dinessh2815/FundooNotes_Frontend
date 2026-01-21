@@ -1,0 +1,114 @@
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Edit labels</h3>
+      <button class="close-btn" (click)="onClose()" aria-label="Close">
+        <svg width="24" height="24" viewBox="0 0 24 24">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Create new label input -->
+      <div class="create-label-section">
+        <svg width="24" height="24" viewBox="0 0 24 24" class="label-icon">
+          <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z" fill="currentColor"/>
+        </svg>
+        <input 
+          type="text" 
+          [(ngModel)]="newLabelName"
+          (keyup.enter)="createLabel()"
+          placeholder="Create new label"
+          class="create-label-input"
+        />
+        <button 
+          *ngIf="newLabelName.trim()" 
+          class="icon-btn-small check-btn"
+          (click)="createLabel()"
+          aria-label="Create label"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Labels list -->
+      <div class="labels-list">
+        <div *ngFor="let label of labels" class="label-item">
+          <svg width="24" height="24" viewBox="0 0 24 24" class="label-icon">
+            <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z" fill="currentColor"/>
+          </svg>
+          
+          <input 
+            *ngIf="editingLabelId === label.labelId; else displayLabel"
+            type="text" 
+            [(ngModel)]="editingLabelName"
+            (keyup.enter)="saveLabel(label.labelId)"
+            (keyup.escape)="cancelEditing()"
+            class="edit-label-input"
+            [attr.autofocus]="true"
+          />
+          <ng-template #displayLabel>
+            <span class="label-name">{{ label.name }}</span>
+          </ng-template>
+
+          <div class="label-actions">
+            <button 
+              *ngIf="editingLabelId === label.labelId; else editBtn"
+              class="icon-btn-small"
+              (click)="saveLabel(label.labelId)"
+              aria-label="Save"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/>
+              </svg>
+            </button>
+            <ng-template #editBtn>
+              <button 
+                class="icon-btn-small"
+                (click)="startEditing(label)"
+                aria-label="Edit"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24">
+                  <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor"/>
+                </svg>
+              </button>
+            </ng-template>
+
+            <button 
+              *ngIf="editingLabelId === label.labelId; else deleteBtn"
+              class="icon-btn-small"
+              (click)="cancelEditing()"
+              aria-label="Cancel"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/>
+              </svg>
+            </button>
+            <ng-template #deleteBtn>
+              <button 
+                class="icon-btn-small"
+                (click)="deleteLabel(label.labelId)"
+                aria-label="Delete"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24">
+                  <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" fill="currentColor"/>
+                </svg>
+              </button>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-message" *ngIf="labels.length === 0">
+        <p>You can also add labels by typing '#'.</p>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="done-btn" (click)="onClose()">Done</button>
+    </div>
+  </div>
+</div>

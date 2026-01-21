@@ -6,6 +6,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 import { BinComponent } from './components/bin/bin.component';
 import { ArchiveComponent } from './components/archive/archive.component';
+import { LabelViewComponent } from './components/label-view/label-view.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -15,5 +16,6 @@ export const routes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'archive', component: ArchiveComponent },
-  { path: 'bin', component: BinComponent }
+  { path: 'bin', component: BinComponent },
+  { path: 'label/:labelId', component: LabelViewComponent }
 ];
