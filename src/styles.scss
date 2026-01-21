@@ -6,12 +6,56 @@
   box-sizing: border-box;
 }
 
+:root {
+  /* Light mode colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f1f3f4;
+  --bg-hover: #f1f3f4;
+  --text-primary: #202124;
+  --text-secondary: #5f6368;
+  --border-color: #e0e0e0;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --shadow-hover: rgba(0, 0, 0, 0.15);
+  --input-bg: #f1f3f4;
+  --note-bg: #ffffff;
+  --sidebar-bg: #ffffff;
+  --header-bg: #ffffff;
+  --modal-bg: #ffffff;
+  --modal-overlay: rgba(0, 0, 0, 0.5);
+  --scrollbar-thumb: rgba(0, 0, 0, 0.2);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.35);
+  --scrollbar-thumb-active: rgba(0, 0, 0, 0.45);
+}
+
+.dark-mode {
+  /* Dark mode colors */
+  --bg-primary: #202124;
+  --bg-secondary: #2d2e30;
+  --bg-hover: #3c4043;
+  --text-primary: #e8eaed;
+  --text-secondary: #9aa0a6;
+  --border-color: #5f6368;
+  --shadow: rgba(0, 0, 0, 0.3);
+  --shadow-hover: rgba(0, 0, 0, 0.4);
+  --input-bg: #2d2e30;
+  --note-bg: #2d2e30;
+  --sidebar-bg: #202124;
+  --header-bg: #202124;
+  --modal-bg: #2d2e30;
+  --modal-overlay: rgba(0, 0, 0, 0.7);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.2);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.35);
+  --scrollbar-thumb-active: rgba(255, 255, 255, 0.45);
+}
+
 body {
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #fff;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   overflow: hidden; /* Prevent body scrollbar */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 html, body {
@@ -31,21 +75,21 @@ html, body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--scrollbar-thumb);
   border-radius: 4px;
   transition: background 0.2s;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.35);
+  background: var(--scrollbar-thumb-hover);
 }
 
 ::-webkit-scrollbar-thumb:active {
-  background: rgba(0, 0, 0, 0.45);
+  background: var(--scrollbar-thumb-active);
 }
 
 /* For Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
 }

@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { LabelService } from '../../../services/label.service';
 import { NoteService } from '../../../services/note.service';
+import { ThemeService } from '../../../services/theme.service';
 import { Label } from '../../../models/label.model';
 import { Note } from '../../../models/note.model';
 
@@ -29,6 +30,7 @@ export class HeaderComponent {
   showProfileDropdown: boolean = false;
   labels: Label[] = [];
   filteredNotes: Note[] = [];
+  isDarkMode: boolean = false;
   
   colorPalette = [
     { name: 'Default', value: '#ffffff' },
@@ -49,7 +51,8 @@ export class HeaderComponent {
     private authService: AuthService,
     private router: Router,
     private labelService: LabelService,
-    private noteService: NoteService
+    private noteService: NoteService,
+    private themeService: ThemeService
   ) {}
 
   ngOnInit(): void {
@@ -57,6 +60,11 @@ export class HeaderComponent {
     if (this.userEmail) {
       this.loadLabels();
     }
+    
+    // Subscribe to theme changes
+    this.themeService.darkMode$.subscribe(isDark => {
+      this.isDarkMode = isDark;
+    });
   }
 
   loadLabels(): void {
@@ -134,6 +142,10 @@ export class HeaderComponent {
 
   toggleProfileDropdown(): void {
     this.showProfileDropdown = !this.showProfileDropdown;
+  }
+
+  toggleDarkMode(): void {
+    this.themeService.toggleDarkMode();
   }
 
   refreshPage(): void {
