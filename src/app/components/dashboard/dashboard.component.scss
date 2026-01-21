@@ -237,6 +237,8 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 16px;
+  grid-auto-rows: auto; // Allow variable heights
+  align-items: start; // Align items to top
 }
 
 .note-card {
@@ -295,6 +297,12 @@
     margin: 0 0 12px;
     word-wrap: break-word;
     white-space: pre-wrap;
+    max-height: 50vh; // Limit to 50% of viewport height
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 20; // Max 20 lines
+    -webkit-box-orient: vertical;
   }
 
   .note-labels {
@@ -400,6 +408,24 @@
 
     &::placeholder {
       color: #80868b;
+    }
+  }
+
+  // Label chips in modal
+  .note-labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0 24px;
+    margin-bottom: 8px;
+
+    .label-chip {
+      background-color: rgba(0, 0, 0, 0.08);
+      border-radius: 12px;
+      padding: 4px 12px;
+      font-size: 12px;
+      color: #202124;
+      display: inline-block;
     }
   }
 
