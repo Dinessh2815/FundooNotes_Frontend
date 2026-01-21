@@ -1,6 +1,12 @@
 <div class="dashboard-container">
   <!-- Header -->
-  <app-header [userEmail]="userEmail" (toggleSidebar)="toggleSidebar()"></app-header>
+  <app-header 
+    [userEmail]="userEmail" 
+    (toggleSidebar)="toggleSidebar()"
+    (searchQuery)="onSearchQuery($event)"
+    (filterByLabel)="onFilterByLabel($event)"
+    (filterByColor)="onFilterByColor($event)">
+  </app-header>
 
   <!-- Sidebar -->
   <app-sidebar [isExpanded]="isSidebarExpanded"></app-sidebar>

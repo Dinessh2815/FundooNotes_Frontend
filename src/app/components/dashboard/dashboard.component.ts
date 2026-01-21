@@ -61,6 +61,12 @@ export class DashboardComponent implements OnInit {
   labelPickerPosition: { top: string, left: string } = { top: '0', left: '0' };
   noteLabels: Map<number, Label[]> = new Map();
   showLabelInfoMessage: boolean = false;
+  
+  // Filtering
+  allNotes: Note[] = [];
+  searchFilter: string = '';
+  labelFilter: number | null = null;
+  colorFilter: string | null = null;
 
   constructor(
     private authService: AuthService,
@@ -102,13 +108,11 @@ export class DashboardComponent implements OnInit {
     this.noteService.getAllNotes().subscribe({
       next: (notes) => {
         console.log('Fetched notes:', notes);
-        this.notes = [...notes.filter(n => !n.isDeleted && !n.isArchived)];
-        this.pinnedNotes = [...this.notes.filter(n => n.isPinned)];
-        this.otherNotes = [...this.notes.filter(n => !n.isPinned)];
-        console.log('Filtered notes:', { total: this.notes.length, pinned: this.pinnedNotes.length, other: this.otherNotes.length });
+        this.allNotes = [...notes.filter(n => !n.isDeleted && !n.isArchived)];
+        this.applyFilters();
         
         // Load labels for all notes
-        this.notes.forEach(note => this.loadNoteLabels(note.noteId));
+        this.allNotes.forEach(note => this.loadNoteLabels(note.noteId));
         
         this.cdr.markForCheck();
       },
@@ -116,6 +120,62 @@ export class DashboardComponent implements OnInit {
         console.error('Error loading notes:', error);
       }
     });
+  }
+
+  applyFilters(): void {
+    let filteredNotes = [...this.allNotes];
+
+    // Apply search filter
+    if (this.searchFilter) {
+      filteredNotes = filteredNotes.filter(note => 
+        note.title?.toLowerCase().includes(this.searchFilter.toLowerCase())
+      );
+    }
+
+    // Apply label filter
+    if (this.labelFilter !== null) {
+      filteredNotes = filteredNotes.filter(note => {
+        const noteLabels = this.noteLabels.get(note.noteId) || [];
+        return noteLabels.some(label => label.labelId === this.labelFilter);
+      });
+    }
+
+    // Apply color filter
+    if (this.colorFilter) {
+      filteredNotes = filteredNotes.filter(note => note.color === this.colorFilter);
+    }
+
+    this.notes = filteredNotes;
+    this.pinnedNotes = filteredNotes.filter(n => n.isPinned);
+    this.otherNotes = filteredNotes.filter(n => !n.isPinned);
+    
+    console.log('Filtered notes:', { 
+      total: this.notes.length, 
+      pinned: this.pinnedNotes.length, 
+      other: this.otherNotes.length,
+      filters: { search: this.searchFilter, label: this.labelFilter, color: this.colorFilter }
+    });
+  }
+
+  onSearchQuery(query: string): void {
+    this.searchFilter = query;
+    this.labelFilter = null;
+    this.colorFilter = null;
+    this.applyFilters();
+  }
+
+  onFilterByLabel(labelId: number): void {
+    this.labelFilter = labelId;
+    this.searchFilter = '';
+    this.colorFilter = null;
+    this.applyFilters();
+  }
+
+  onFilterByColor(color: string): void {
+    this.colorFilter = color;
+    this.searchFilter = '';
+    this.labelFilter = null;
+    this.applyFilters();
   }
 
   loadNoteLabels(noteId: number): void {
