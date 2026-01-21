@@ -17,10 +17,12 @@ import { Note } from '../../../models/note.model';
 })
 export class HeaderComponent {
   @Input() userEmail: string | null = null;
+  @Input() hasActiveFilter: boolean = false;
   @Output() toggleSidebar = new EventEmitter<void>();
   @Output() searchQuery = new EventEmitter<string>();
   @Output() filterByLabel = new EventEmitter<number>();
   @Output() filterByColor = new EventEmitter<string>();
+  @Output() clearFilters = new EventEmitter<void>();
 
   searchText: string = '';
   showSearchPreview: boolean = false;
@@ -121,6 +123,13 @@ export class HeaderComponent {
     this.showSearchPreview = false;
     this.filteredNotes = [];
     this.searchQuery.emit('');
+  }
+
+  clearAllFilters(): void {
+    this.searchText = '';
+    this.showSearchPreview = false;
+    this.filteredNotes = [];
+    this.clearFilters.emit();
   }
 
   toggleProfileDropdown(): void {

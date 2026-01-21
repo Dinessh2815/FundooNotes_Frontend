@@ -2,10 +2,12 @@
   <!-- Header -->
   <app-header 
     [userEmail]="userEmail" 
+    [hasActiveFilter]="hasActiveFilter()"
     (toggleSidebar)="toggleSidebar()"
     (searchQuery)="onSearchQuery($event)"
     (filterByLabel)="onFilterByLabel($event)"
-    (filterByColor)="onFilterByColor($event)">
+    (filterByColor)="onFilterByColor($event)"
+    (clearFilters)="onClearFilters()">
   </app-header>
 
   <!-- Sidebar -->

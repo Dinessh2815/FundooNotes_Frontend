@@ -178,6 +178,17 @@ export class DashboardComponent implements OnInit {
     this.applyFilters();
   }
 
+  onClearFilters(): void {
+    this.searchFilter = '';
+    this.labelFilter = null;
+    this.colorFilter = null;
+    this.applyFilters();
+  }
+
+  hasActiveFilter(): boolean {
+    return !!(this.searchFilter || this.labelFilter !== null || this.colorFilter);
+  }
+
   loadNoteLabels(noteId: number): void {
     this.labelService.getNoteLabels(noteId).subscribe({
       next: (labels) => {
