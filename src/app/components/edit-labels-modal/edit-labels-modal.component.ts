@@ -22,6 +22,11 @@ export class EditLabelsModalComponent implements OnInit {
   constructor(private labelService: LabelService) {}
 
   ngOnInit(): void {
+    // Subscribe to labels observable for real-time updates
+    this.labelService.labels$.subscribe(labels => {
+      this.labels = labels;
+    });
+    // Force immediate load
     this.loadLabels();
   }
 

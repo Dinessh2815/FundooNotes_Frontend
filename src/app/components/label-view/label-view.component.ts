@@ -42,13 +42,15 @@ export class LabelViewComponent implements OnInit {
     
     this.userEmail = this.authService.getEmail();
     
+    // Force initial load of all labels
+    this.labelService.getAllLabels().subscribe();
+    
     this.route.params.subscribe(params => {
       const newLabelId = +params['labelId'];
-      // Only reload if the labelId actually changed
-      if (this.labelId !== newLabelId) {
-        this.labelId = newLabelId;
-        this.loadLabelAndNotes();
-      }
+      console.log('Route params changed, labelId:', newLabelId);
+      // Always reload when route params change
+      this.labelId = newLabelId;
+      this.loadLabelAndNotes();
     });
   }
 
