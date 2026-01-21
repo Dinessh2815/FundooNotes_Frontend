@@ -140,12 +140,19 @@ export class DashboardComponent implements OnInit {
     const rect = button.getBoundingClientRect();
     
     this.labelPickerPosition = {
-      top: `${rect.bottom + window.scrollY}px`,
-      left: `${rect.left + window.scrollX}px`
+      top: `${rect.bottom}px`,
+      left: `${rect.left}px`
     };
     
     this.labelPickerNoteId = note.noteId;
     this.showLabelPicker = true;
+  }
+
+  openLabelPickerForNewNote(event: MouseEvent): void {
+    event.stopPropagation();
+    // For new note, we'll just show the info message but won't actually assign labels
+    // until the note is created. User can add labels after creating the note.
+    alert('Please create the note first, then you can add labels to it.');
   }
 
   closeLabelPicker(): void {
