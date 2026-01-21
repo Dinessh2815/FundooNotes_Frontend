@@ -28,10 +28,12 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
     // Only load labels if user is authenticated
     if (this.isAuthenticated()) {
-      this.loadLabels();
+      // Subscribe to labels observable for real-time updates
       this.labelService.labels$.subscribe(labels => {
         this.labels = labels;
       });
+      // Force initial load
+      this.loadLabels();
     }
   }
 

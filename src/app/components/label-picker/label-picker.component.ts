@@ -28,6 +28,11 @@ export class LabelPickerComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Subscribe to labels observable for real-time updates
+    this.labelService.labels$.subscribe(labels => {
+      this.allLabels = labels;
+    });
+    // Force initial load
     this.loadLabels();
   }
 

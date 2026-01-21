@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NoteService } from '../../services/note.service';
 import { LabelService } from '../../services/label.service';
@@ -26,6 +26,7 @@ export class LabelViewComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private noteService: NoteService,
     private labelService: LabelService,
     private authService: AuthService,
@@ -33,41 +34,77 @@ export class LabelViewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Check authentication first
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+    
     this.userEmail = this.authService.getEmail();
     
     this.route.params.subscribe(params => {
-      this.labelId = +params['labelId'];
-      this.loadLabelAndNotes();
+      const newLabelId = +params['labelId'];
+      // Only reload if the labelId actually changed
+      if (this.labelId !== newLabelId) {
+        this.labelId = newLabelId;
+        this.loadLabelAndNotes();
+      }
     });
   }
 
   loadLabelAndNotes(): void {
+    console.log('Loading label and notes for labelId:', this.labelId);
+    
     // Load all labels to find the current one
     this.labelService.getAllLabels().subscribe({
       next: (labels) => {
         this.label = labels.find(l => l.labelId === this.labelId) || null;
+        console.log('Found label:', this.label);
       },
       error: (error) => {
         console.error('Error loading label:', error);
+        if (error.status === 401) {
+          this.router.navigate(['/login']);
+        }
       }
     });
 
-    // Load all notes and filter by label
+    // Load all notes first
     this.noteService.getAllNotes().subscribe({
-      next: async (allNotes) => {
-        // Filter notes by checking which ones have this label
-        const notesWithLabels = await Promise.all(
-          allNotes.map(async (note) => {
-            const labels = await this.labelService.getNoteLabels(note.noteId).toPromise();
-            const hasLabel = labels?.some(l => l.labelId === this.labelId);
-            return hasLabel ? note : null;
-          })
-        );
+      next: (allNotes) => {
+        console.log('Loaded all notes:', allNotes.length);
+        // Then filter by checking which ones have this label
+        this.notes = [];
+        let checkedCount = 0;
         
-        this.notes = notesWithLabels.filter((note): note is Note => note !== null);
+        if (allNotes.length === 0) {
+          return;
+        }
+        
+        allNotes.forEach((note) => {
+          this.labelService.getNoteLabels(note.noteId).subscribe({
+            next: (labels) => {
+              checkedCount++;
+              const hasLabel = labels.some(l => l.labelId === this.labelId);
+              if (hasLabel) {
+                this.notes.push(note);
+              }
+              if (checkedCount === allNotes.length) {
+                console.log('Filtered notes with label:', this.notes.length);
+              }
+            },
+            error: (error) => {
+              console.error('Error loading note labels:', error);
+              checkedCount++;
+            }
+          });
+        });
       },
       error: (error) => {
         console.error('Error loading notes:', error);
+        if (error.status === 401) {
+          this.router.navigate(['/login']);
+        }
       }
     });
   }
