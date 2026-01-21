@@ -332,6 +332,9 @@ export class DashboardComponent implements OnInit {
     this.noteService.deleteNote(note.noteId).subscribe({
       next: (response) => {
         console.log('Note deleted successfully:', response);
+        if (this.editingNote?.noteId === note.noteId) {
+          this.editingNote = null;
+        }
         this.loadNotes();
       },
       error: (error) => {
@@ -341,7 +344,13 @@ export class DashboardComponent implements OnInit {
   }
 
   changeColor(note: Note, color: string): void {
-    this.noteService.updateNote(note.noteId, { color: color }).subscribe({
+    this.showColorPicker = false;
+    const updateData: UpdateNoteRequest = {
+      title: note.title,
+      description: note.description,
+      color: color
+    };
+    this.noteService.updateNote(note.noteId, updateData).subscribe({
       next: () => {
         this.loadNotes();
       },
