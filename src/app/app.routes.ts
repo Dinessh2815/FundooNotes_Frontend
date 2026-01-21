@@ -17,5 +17,5 @@ export const routes: Routes = [
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'archive', component: ArchiveComponent },
   { path: 'bin', component: BinComponent },
-  { path: 'label/:labelId', component: LabelViewComponent }
+  { path: 'label/:labelId', component: LabelViewComponent, runGuardsAndResolvers: 'always' }
 ];

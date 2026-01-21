@@ -1,7 +1,8 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID, ChangeDetectorRef, OnDestroy, afterNextRender } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { Subscription, filter } from 'rxjs';
 import { NoteService } from '../../services/note.service';
 import { LabelService } from '../../services/label.service';
 import { AuthService } from '../../services/auth.service';
@@ -17,12 +18,14 @@ import { SidebarComponent } from '../shared/sidebar/sidebar.component';
   templateUrl: './label-view.component.html',
   styleUrls: ['./label-view.component.scss']
 })
-export class LabelViewComponent implements OnInit {
+export class LabelViewComponent implements OnInit, OnDestroy {
   labelId!: number;
   label: Label | null = null;
   notes: Note[] = [];
   userEmail: string | null = null;
   isSidebarExpanded: boolean = true;
+  private routeSubscription?: Subscription;
+  private navigationSubscription?: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,10 +33,22 @@ export class LabelViewComponent implements OnInit {
     private noteService: NoteService,
     private labelService: LabelService,
     private authService: AuthService,
+    private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {}
+  ) {
+    // Load data AFTER hydration completes (SSR)
+    if (isPlatformBrowser(this.platformId)) {
+      afterNextRender(() => {
+        this.initializeComponent();
+      });
+    }
+  }
 
   ngOnInit(): void {
+    // Component initialization happens in constructor via afterNextRender for SSR
+  }
+
+  initializeComponent(): void {
     // Check authentication first
     if (!this.authService.isLoggedIn()) {
       this.router.navigate(['/login']);
@@ -42,26 +57,45 @@ export class LabelViewComponent implements OnInit {
     
     this.userEmail = this.authService.getEmail();
     
-    // Force initial load of all labels
-    this.labelService.getAllLabels().subscribe();
-    
-    this.route.params.subscribe(params => {
+    // Listen to route param changes
+    this.routeSubscription = this.route.params.subscribe(params => {
       const newLabelId = +params['labelId'];
       console.log('Route params changed, labelId:', newLabelId);
-      // Always reload when route params change
       this.labelId = newLabelId;
       this.loadLabelAndNotes();
     });
+    
+    // Also listen to navigation events to handle same-route navigation
+    this.navigationSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(() => {
+        const labelId = +this.route.snapshot.params['labelId'];
+        if (labelId && this.labelId !== labelId) {
+          this.labelId = labelId;
+          this.loadLabelAndNotes();
+        }
+      });
+  }
+  
+  ngOnDestroy(): void {
+    this.routeSubscription?.unsubscribe();
+    this.navigationSubscription?.unsubscribe();
   }
 
   loadLabelAndNotes(): void {
     console.log('Loading label and notes for labelId:', this.labelId);
+    
+    // Reset notes array
+    this.notes = [];
+    this.label = null;
+    this.cdr.detectChanges();
     
     // Load all labels to find the current one
     this.labelService.getAllLabels().subscribe({
       next: (labels) => {
         this.label = labels.find(l => l.labelId === this.labelId) || null;
         console.log('Found label:', this.label);
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error loading label:', error);
@@ -76,10 +110,10 @@ export class LabelViewComponent implements OnInit {
       next: (allNotes) => {
         console.log('Loaded all notes:', allNotes.length);
         // Then filter by checking which ones have this label
-        this.notes = [];
         let checkedCount = 0;
         
         if (allNotes.length === 0) {
+          this.cdr.detectChanges();
           return;
         }
         
@@ -90,9 +124,11 @@ export class LabelViewComponent implements OnInit {
               const hasLabel = labels.some(l => l.labelId === this.labelId);
               if (hasLabel) {
                 this.notes.push(note);
+                this.cdr.detectChanges();
               }
               if (checkedCount === allNotes.length) {
                 console.log('Filtered notes with label:', this.notes.length);
+                this.cdr.detectChanges();
               }
             },
             error: (error) => {
