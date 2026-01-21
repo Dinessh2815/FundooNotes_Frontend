@@ -57,12 +57,24 @@
   &.active {
     background-color: #feefc3;
 
+    :host-context(.dark-mode) & {
+      background-color: #41331c;
+    }
+
     svg {
       color: #202124;
+      
+      :host-context(.dark-mode) & {
+        color: #e8eaed;
+      }
     }
 
     span {
       font-weight: 600;
+      
+      :host-context(.dark-mode) & {
+        color: #e8eaed;
+      }
     }
   }
 }

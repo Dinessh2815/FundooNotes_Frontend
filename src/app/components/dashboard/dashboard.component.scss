@@ -329,6 +329,11 @@
       transition: background-color 0.2s;
       min-height: 24px;
 
+      :host-context(.dark-mode) & {
+        background-color: #e8eaed;
+        color: #202124;
+      }
+
       .label-text {
         flex-shrink: 0;
         line-height: 1.2;
@@ -495,6 +500,11 @@
       cursor: pointer;
       transition: background-color 0.2s;
       min-height: 24px;
+
+      :host-context(.dark-mode) & {
+        background-color: #e8eaed;
+        color: #202124;
+      }
 
       .label-text {
         flex-shrink: 0;
