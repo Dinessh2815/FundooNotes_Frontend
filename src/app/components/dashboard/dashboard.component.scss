@@ -322,16 +322,18 @@
       padding: 4px 12px;
       font-size: 12px;
       color: #202124;
+      border: 1px solid transparent;
       display: inline-flex;
       align-items: center;
       position: relative;
       cursor: pointer;
-      transition: background-color 0.2s;
+      transition: background-color 0.2s, color 0.2s, border-color 0.2s;
       min-height: 24px;
 
       :host-context(.dark-mode) & {
-        background-color: #e8eaed;
-        color: #202124;
+        background-color: transparent;
+        color: #e8eaed;
+        border-color: #9aa0a6;
       }
 
       .label-text {
@@ -494,16 +496,18 @@
       padding: 4px 12px;
       font-size: 12px;
       color: #202124;
+      border: 1px solid transparent;
       display: inline-flex;
       align-items: center;
       position: relative;
       cursor: pointer;
-      transition: background-color 0.2s;
+      transition: background-color 0.2s, color 0.2s, border-color 0.2s;
       min-height: 24px;
 
       :host-context(.dark-mode) & {
-        background-color: #e8eaed;
-        color: #202124;
+        background-color: transparent;
+        color: #e8eaed;
+        border-color: #9aa0a6;
       }
 
       .label-text {
