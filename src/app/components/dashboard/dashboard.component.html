@@ -118,8 +118,13 @@
           
           <!-- Note Labels -->
           <div class="note-labels" *ngIf="getNoteLabels(note.noteId).length > 0">
-            <span *ngFor="let label of getNoteLabels(note.noteId)" class="label-chip">
-              {{ label.name }}
+            <span *ngFor="let label of getNoteLabels(note.noteId)" class="label-chip" (click)="$event.stopPropagation()">
+              <span class="label-text">{{ label.name }}</span>
+              <button class="label-close" (click)="removeLabelFromNote(note.noteId, label.labelId)" aria-label="Remove label" title="Remove label">
+                <svg width="14" height="14" viewBox="0 0 24 24">
+                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" fill="currentColor"/>
+                </svg>
+              </button>
             </span>
           </div>
           
@@ -186,8 +191,13 @@
           
           <!-- Note Labels -->
           <div class="note-labels" *ngIf="getNoteLabels(note.noteId).length > 0">
-            <span *ngFor="let label of getNoteLabels(note.noteId)" class="label-chip">
-              {{ label.name }}
+            <span *ngFor="let label of getNoteLabels(note.noteId)" class="label-chip" (click)="$event.stopPropagation()">
+              <span class="label-text">{{ label.name }}</span>
+              <button class="label-close" (click)="removeLabelFromNote(note.noteId, label.labelId)" aria-label="Remove label" title="Remove label">
+                <svg width="14" height="14" viewBox="0 0 24 24">
+                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" fill="currentColor"/>
+                </svg>
+              </button>
             </span>
           </div>
           
@@ -277,8 +287,13 @@
       
       <!-- Note Labels in Edit Modal -->
       <div class="note-labels" *ngIf="getNoteLabels(editingNote.noteId).length > 0" style="margin: 8px 0;">
-        <span *ngFor="let label of getNoteLabels(editingNote.noteId)" class="label-chip">
-          {{ label.name }}
+        <span *ngFor="let label of getNoteLabels(editingNote.noteId)" class="label-chip" (click)="$event.stopPropagation()">
+          <span class="label-text">{{ label.name }}</span>
+          <button class="label-close" (click)="removeLabelFromNote(editingNote.noteId, label.labelId)" aria-label="Remove label" title="Remove label">
+            <svg width="14" height="14" viewBox="0 0 24 24">
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" fill="currentColor"/>
+            </svg>
+          </button>
         </span>
       </div>
       

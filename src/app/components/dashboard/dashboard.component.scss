@@ -319,7 +319,56 @@
       padding: 4px 12px;
       font-size: 12px;
       color: #202124;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      position: relative;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      min-height: 24px;
+
+      .label-text {
+        flex-shrink: 0;
+        line-height: 1.2;
+      }
+
+      .label-close {
+        display: none;
+        width: 18px;
+        height: 18px;
+        min-width: 18px;
+        min-height: 18px;
+        border: none;
+        background: transparent;
+        border-radius: 50%;
+        cursor: pointer;
+        padding: 0;
+        margin: 0;
+        align-items: center;
+        justify-content: center;
+        color: #5f6368;
+        transition: background-color 0.2s;
+        flex-shrink: 0;
+        margin-left: -4px;
+
+        &:hover {
+          background-color: rgba(95, 99, 104, 0.2);
+          color: #202124;
+        }
+
+        svg {
+          display: block;
+        }
+      }
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.12);
+        padding-right: 8px;
+
+        .label-close {
+          display: flex;
+        }
+      }
     }
   }
 
@@ -427,7 +476,56 @@
       padding: 4px 12px;
       font-size: 12px;
       color: #202124;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      position: relative;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      min-height: 24px;
+
+      .label-text {
+        flex-shrink: 0;
+        line-height: 1.2;
+      }
+
+      .label-close {
+        display: none;
+        width: 18px;
+        height: 18px;
+        min-width: 18px;
+        min-height: 18px;
+        border: none;
+        background: transparent;
+        border-radius: 50%;
+        cursor: pointer;
+        padding: 0;
+        margin: 0;
+        align-items: center;
+        justify-content: center;
+        color: #5f6368;
+        transition: background-color 0.2s;
+        flex-shrink: 0;
+        margin-left: -4px;
+
+        &:hover {
+          background-color: rgba(95, 99, 104, 0.2);
+          color: #202124;
+        }
+
+        svg {
+          display: block;
+        }
+      }
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.12);
+        padding-right: 8px;
+
+        .label-close {
+          display: flex;
+        }
+      }
     }
   }
 

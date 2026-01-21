@@ -166,6 +166,17 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  removeLabelFromNote(noteId: number, labelId: number): void {
+    this.labelService.removeLabelFromNote(noteId, labelId).subscribe({
+      next: () => {
+        this.loadNoteLabels(noteId);
+      },
+      error: (error) => {
+        console.error('Error removing label from note:', error);
+      }
+    });
+  }
+
   getAttachedLabelIds(noteId: number): number[] {
     const labels = this.noteLabels.get(noteId) || [];
     return labels.map(l => l.labelId);
