@@ -131,3 +131,51 @@
   font-size: 14px;
   font-weight: 500;
 }
+
+// Responsive Design
+@media (max-width: 1024px) {
+  .header-center {
+    max-width: 500px;
+    padding: 0 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 8px 8px;
+  }
+
+  .header-left {
+    min-width: auto;
+    gap: 8px;
+  }
+
+  .app-title {
+    display: none;
+  }
+
+  .header-center {
+    display: none;
+  }
+
+  .header-right {
+    min-width: auto;
+    gap: 4px;
+  }
+
+  .icon-btn, .menu-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .logo {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-right .icon-btn:not(.user-btn) {
+    display: none;
+  }
+}

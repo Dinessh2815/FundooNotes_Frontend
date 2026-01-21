@@ -131,3 +131,74 @@
     font-size: 20px;
   }
 }
+
+// Responsive Design
+@media (max-width: 1024px) {
+  .main-content {
+    left: 64px;
+
+    &.sidebar-collapsed {
+      left: 64px;
+    }
+  }
+
+  .notes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    left: 0;
+    padding: 16px 12px;
+
+    &.sidebar-collapsed {
+      left: 64px;
+    }
+  }
+
+  .notes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+
+  .note-card {
+    padding: 10px 12px;
+
+    .note-header .note-title {
+      font-size: 15px;
+    }
+
+    .note-description {
+      font-size: 13px;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .notes-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .main-content {
+    padding: 12px 8px;
+  }
+
+  .note-card .note-footer {
+    opacity: 1;
+  }
+
+  .bin-header h2 {
+    font-size: 14px;
+  }
+
+  .bin-description {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 8px;
+  }
+}

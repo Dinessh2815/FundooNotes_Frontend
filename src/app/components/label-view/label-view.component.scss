@@ -165,3 +165,93 @@
     margin: 0;
   }
 }
+
+// Responsive Design
+@media (max-width: 1024px) {
+  .main-content {
+    left: 64px;
+
+    &.sidebar-collapsed {
+      left: 64px;
+    }
+  }
+
+  .notes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    left: 0;
+    padding: 16px 12px;
+
+    &.sidebar-collapsed {
+      left: 64px;
+    }
+  }
+
+  .notes-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+  }
+
+  .note-card {
+    padding: 10px 12px;
+
+    .note-title {
+      font-size: 15px;
+    }
+
+    .note-description {
+      font-size: 13px;
+    }
+  }
+
+  .label-header {
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+
+    h2 {
+      font-size: 20px;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .notes-grid {
+    grid-template-columns: 1fr;
+    padding: 4px;
+  }
+
+  .main-content {
+    padding: 12px 8px;
+  }
+
+  .note-card .note-footer {
+    opacity: 1;
+  }
+
+  .label-header {
+    margin-bottom: 16px;
+
+    h2 {
+      font-size: 18px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 8px;
+  }
+
+  .label-header {
+    gap: 12px;
+
+    h2 {
+      font-size: 16px;
+    }
+  }
+}

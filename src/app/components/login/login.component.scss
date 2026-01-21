@@ -148,5 +148,56 @@
   .login-card {
     padding: 24px 20px;
     border: none;
+    box-shadow: none;
+  }
+
+  .login-header h2 {
+    font-size: 20px;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+    gap: 16px;
+
+    .btn-primary {
+      width: 100%;
+    }
+
+    .create-account-link {
+      align-self: flex-start;
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  .login-container {
+    padding: 12px;
+  }
+
+  .login-card {
+    padding: 20px 16px;
+  }
+
+  .login-header {
+    .google-logo {
+      width: 60px;
+    }
+
+    h2 {
+      font-size: 18px;
+    }
+
+    p {
+      font-size: 14px;
+    }
+  }
+
+  .form-input {
+    font-size: 14px;
+    padding: 12px 14px;
+
+    &:focus {
+      padding: 11px 13px;
+    }
   }
 }
