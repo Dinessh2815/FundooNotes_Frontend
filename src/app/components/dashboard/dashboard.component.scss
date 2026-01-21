@@ -2,6 +2,7 @@
   height: 100vh;
   background-color: #fff;
   font-family: 'Roboto', Arial, sans-serif;
+  overflow-x: hidden;
 }
 
 // Main Content
@@ -13,6 +14,7 @@
   bottom: 0;
   padding: 32px 16px;
   overflow-y: auto;
+  overflow-x: hidden;
   transition: left 0.2s ease-in-out;
 
   &.sidebar-collapsed {

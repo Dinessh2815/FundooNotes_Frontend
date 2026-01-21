@@ -11,9 +11,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #fff;
+  overflow: hidden; /* Prevent body scrollbar */
 }
 
 html, body {
   height: 100%;
+  overflow: hidden; /* Prevent html scrollbar */
 }
 
