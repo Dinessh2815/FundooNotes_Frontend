@@ -10,7 +10,7 @@
 .main-content {
   position: fixed;
   top: 64px;
-  left: 300px;
+  left: 280px;
   right: 0;
   bottom: 0;
   padding: 32px 80px;
@@ -19,7 +19,7 @@
   transition: left 0.2s ease-in-out;
 
   &.sidebar-collapsed {
-    left: 200px;
+    left: 80px;
   }
 }
 
@@ -327,29 +327,27 @@
 
 // Masonry Grid - Google Keep style using CSS columns
 .notes-grid {
+  column-gap: 16px;
   
-
-  column-gap: 10px;
+  // Default: 3 columns for all desktop screens
+  column-count: 3;
   
-  // Mobile first: single column
-  column-count: 1;
+  // Mobile: single column
+  @media (max-width: 599px) {
+    column-count: 1;
+  }
   
-  // 2 columns for tablets
-  @media (min-width: 600px) {
+  // Tablets: 2 columns
+  @media (min-width: 600px) and (max-width: 899px) {
     column-count: 2;
   }
   
-  // 3 columns for desktop (default)
-  @media (min-width: 900px) {
-    column-count: 3;
-  }
-  
-  // 4 columns for large screens
+  // Large screens: 4 columns
   @media (min-width: 1200px) {
-    column-count: 3;
+    column-count: 4;
   }
   
-  // 5 columns for extra large screens
+  // Extra large screens: 5 columns
   @media (min-width: 1500px) {
     column-count: 5;
   }
