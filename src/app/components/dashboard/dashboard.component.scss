@@ -323,6 +323,16 @@
     letter-spacing: 0.8px;
     margin: 0 0 16px 4px;
   }
+
+  &.list-view {
+    max-width: 600px;
+
+    .section-title {
+      width: 100%;
+      margin: 0 0 12px 0;
+      padding-left: 4px;
+    }
+  }
 }
 
 .notes-grid {

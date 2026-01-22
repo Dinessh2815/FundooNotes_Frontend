@@ -89,10 +89,10 @@
       </svg>
     </button>
     <button class="icon-btn" [attr.aria-label]="isListView ? 'Grid view' : 'List view'" (click)="toggleViewMode()">
-      <svg *ngIf="!isListView" width="24" height="24" viewBox="0 0 24 24">
+      <svg *ngIf="isListView" width="24" height="24" viewBox="0 0 24 24">
         <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" fill="currentColor"/>
       </svg>
-      <svg *ngIf="isListView" width="24" height="24" viewBox="0 0 24 24">
+      <svg *ngIf="!isListView" width="24" height="24" viewBox="0 0 24 24">
         <path d="M4 14h4v-4H4v4zm0 5h4v-4H4v4zM4 9h4V5H4v4zm5 5h12v-4H9v4zm0 5h12v-4H9v4zM9 5v4h12V5H9z" fill="currentColor"/>
       </svg>
     </button>
