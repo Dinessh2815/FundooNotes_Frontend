@@ -315,10 +315,44 @@
 }
 
 // Responsive Design
+@media (max-width: 1200px) {
+  .header-center {
+    max-width: 600px;
+    padding: 0 20px;
+  }
+}
+
 @media (max-width: 1024px) {
   .header-center {
     max-width: 500px;
     padding: 0 16px;
+  }
+  
+  .app-title {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 900px) {
+  .header-left {
+    gap: 8px;
+  }
+  
+  .app-title {
+    font-size: 18px;
+  }
+  
+  .header-center {
+    max-width: 400px;
+    padding: 0 12px;
+  }
+  
+  .search-bar {
+    height: 42px;
+  }
+  
+  .search-input {
+    font-size: 15px;
   }
 }
 
@@ -329,7 +363,8 @@
 
   .header-left {
     min-width: auto;
-    gap: 8px;
+    gap: 4px;
+    flex-shrink: 0;
   }
 
   .app-title {
@@ -337,17 +372,34 @@
   }
 
   .header-center {
-    display: none;
+    padding: 0 8px;
+    max-width: none;
+    flex: 1;
+  }
+  
+  .search-bar {
+    padding: 0 10px;
+    height: 40px;
+  }
+  
+  .search-input {
+    font-size: 14px;
   }
 
   .header-right {
-    min-width: auto;
-    gap: 4px;
+    gap: 2px;
+    flex-shrink: 0;
   }
 
   .icon-btn, .menu-btn {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    
+    svg {
+      width: 20px;
+      height: 20px;
+    }
   }
 
   .logo {
@@ -356,8 +408,84 @@
   }
 }
 
+@media (max-width: 600px) {
+  .header {
+    padding: 6px 4px;
+  }
+  
+  .header-left {
+    gap: 2px;
+  }
+  
+  .logo {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .menu-btn, .icon-btn {
+    width: 36px;
+    height: 36px;
+    padding: 6px;
+    
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  
+  .search-bar {
+    padding: 0 8px;
+    height: 36px;
+  }
+  
+  .search-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 6px;
+  }
+  
+  .search-input {
+    font-size: 13px;
+  }
+  
+  .header-right {
+    gap: 0px;
+  }
+  
+  .user-initial {
+    font-size: 14px;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+  }
+}
+
 @media (max-width: 480px) {
-  .header-right .icon-btn:not(.user-btn) {
-    display: none;
+  .header {
+    padding: 4px 2px;
+  }
+  
+  .header-center {
+    padding: 0 4px;
+  }
+  
+  .search-bar {
+    padding: 0 6px;
+    height: 34px;
+  }
+  
+  .search-icon {
+    margin-right: 4px;
+  }
+  
+  .menu-btn, .icon-btn {
+    width: 34px;
+    height: 34px;
+    padding: 5px;
+    
+    svg {
+      width: 18px;
+      height: 18px;
+    }
   }
 }
