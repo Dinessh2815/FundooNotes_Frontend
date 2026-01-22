@@ -247,13 +247,20 @@
 }
 
 .note-card {
-  border: 1px solid var(--border-color);
+  border: none;
   border-radius: 8px;
   padding: 12px 16px;
   background-color: var(--note-bg);
   cursor: pointer;
   transition: box-shadow 0.2s, background-color 0.3s ease;
   position: relative;
+
+  // Add border only for default white notes
+  &[style*="background-color: rgb(255, 255, 255)"],
+  &[style*="background-color: #ffffff"],
+  &[style*="background-color:#ffffff"] {
+    border: 1px solid #e0e0e0;
+  }
 
   &:hover {
     box-shadow: 0 1px 3px var(--shadow-hover);
@@ -737,6 +744,18 @@
     svg {
       width: 18px;
       height: 18px;
+    }
+  }
+}
+
+// Dark Mode
+:host-context(.dark-mode) {
+  .note-card {
+    // Add border only for default dark notes
+    &[style*="background-color: rgb(32, 33, 36)"],
+    &[style*="background-color: #202124"],
+    &[style*="background-color:#202124"] {
+      border: 1px solid #5f6368;
     }
   }
 }
