@@ -113,7 +113,7 @@
     <!-- Pinned Notes -->
     <div class="notes-section" [class.list-view]="isListView" *ngIf="pinnedNotes.length > 0">
       <h3 class="section-title">PINNED</h3>
-      <div class="notes-grid" [class.list-view]="isListView">
+      <div #notesGrid class="notes-grid" [class.list-view]="isListView">
         <div *ngFor="let note of pinnedNotes" class="note-card" [style.background-color]="note.color" (click)="startEditNote(note)">
           <div class="note-header">
             <h4 class="note-title">{{ note.title }}</h4>
@@ -234,7 +234,7 @@
     <!-- Other Notes -->
     <div class="notes-section" [class.list-view]="isListView" *ngIf="otherNotes.length > 0">
       <h3 class="section-title" *ngIf="pinnedNotes.length > 0">OTHERS</h3>
-      <div class="notes-grid" [class.list-view]="isListView">
+      <div #notesGrid class="notes-grid" [class.list-view]="isListView">
         <div *ngFor="let note of otherNotes" class="note-card" [style.background-color]="note.color" (click)="startEditNote(note)">
           <div class="note-header">
             <h4 class="note-title">{{ note.title }}</h4>

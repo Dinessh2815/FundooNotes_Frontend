@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, PLATFORM_ID, HostListener, ElementRef, ChangeDetectorRef, afterNextRender } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID, HostListener, ElementRef, ChangeDetectorRef, afterNextRender, AfterViewChecked, QueryList, ViewChildren } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -19,7 +19,10 @@ import { LabelPickerComponent } from '../label-picker/label-picker.component';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewChecked {
+  @ViewChildren('notesGrid') notesGrids!: QueryList<ElementRef>;
+  private masonryInitialized = false;
+  
   userEmail: string | null = '';
   notes: Note[] = [];
   pinnedNotes: Note[] = [];
@@ -174,6 +177,66 @@ export class DashboardComponent implements OnInit {
       }
       
       this.cdr.detectChanges();
+    });
+  }
+
+  ngAfterViewChecked(): void {
+    if (isPlatformBrowser(this.platformId) && !this.isListView) {
+      this.applyMasonryLayout();
+    }
+  }
+
+  applyMasonryLayout(): void {
+    if (!this.notesGrids) return;
+    
+    this.notesGrids.forEach((gridRef: ElementRef) => {
+      const grid = gridRef.nativeElement;
+      const cards = grid.querySelectorAll('.note-card') as NodeListOf<HTMLElement>;
+      
+      if (cards.length === 0) return;
+      
+      // Get container width and calculate number of columns
+      const containerWidth = grid.offsetWidth;
+      const gap = 16;
+      let numColumns = 3;
+      
+      if (containerWidth <= 600) numColumns = 1;
+      else if (containerWidth <= 900) numColumns = 2;
+      else numColumns = 3;
+      
+      if (numColumns === 1) {
+        // Reset for single column
+        cards.forEach((card: HTMLElement) => {
+          card.style.position = '';
+          card.style.left = '';
+          card.style.top = '';
+        });
+        grid.style.position = '';
+        grid.style.height = '';
+        return;
+      }
+      
+      const columnWidth = (containerWidth - (gap * (numColumns - 1))) / numColumns;
+      const columnHeights = new Array(numColumns).fill(0);
+      
+      grid.style.position = 'relative';
+      
+      cards.forEach((card: HTMLElement) => {
+        // Find the shortest column
+        const shortestColumn = columnHeights.indexOf(Math.min(...columnHeights));
+        
+        // Position the card
+        card.style.position = 'absolute';
+        card.style.width = `${columnWidth}px`;
+        card.style.left = `${shortestColumn * (columnWidth + gap)}px`;
+        card.style.top = `${columnHeights[shortestColumn]}px`;
+        
+        // Update column height
+        columnHeights[shortestColumn] += card.offsetHeight + gap;
+      });
+      
+      // Set container height
+      grid.style.height = `${Math.max(...columnHeights)}px`;
     });
   }
 
@@ -595,6 +658,16 @@ export class DashboardComponent implements OnInit {
 
   handleViewToggle(isListView: boolean): void {
     this.isListView = isListView;
+    if (!isListView) {
+      setTimeout(() => this.applyMasonryLayout(), 0);
+    }
+  }
+
+  @HostListener('window:resize')
+  onWindowResize(): void {
+    if (!this.isListView) {
+      this.applyMasonryLayout();
+    }
   }
 
   @HostListener('document:click', ['$event'])
