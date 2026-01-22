@@ -202,3 +202,52 @@
     padding: 8px;
   }
 }
+
+// Dark Mode Styles
+:host-context(.dark-mode) {
+  .bin-container {
+    background-color: var(--bg-primary);
+  }
+
+  .main-content {
+    background-color: var(--bg-primary);
+  }
+
+  .bin-header {
+    h2 {
+      color: var(--text-secondary);
+    }
+
+    .bin-description {
+      color: var(--text-tertiary);
+    }
+  }
+
+  .note-card {
+    border-color: var(--border-primary);
+    
+    &:hover {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .note-header .note-title {
+      color: var(--text-primary);
+    }
+
+    .note-description {
+      color: var(--text-primary);
+    }
+  }
+
+  .icon-btn-small {
+    color: var(--text-secondary);
+
+    &:hover {
+      background-color: rgba(232, 234, 237, 0.08);
+    }
+  }
+
+  .empty-state {
+    color: var(--text-secondary);
+  }
+}

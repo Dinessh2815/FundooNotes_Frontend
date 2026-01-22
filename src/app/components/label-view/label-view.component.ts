@@ -6,6 +6,7 @@ import { Subscription, filter } from 'rxjs';
 import { NoteService } from '../../services/note.service';
 import { LabelService } from '../../services/label.service';
 import { AuthService } from '../../services/auth.service';
+import { ThemeService } from '../../services/theme.service';
 import { Note } from '../../models/note.model';
 import { Label } from '../../models/label.model';
 import { HeaderComponent } from '../shared/header/header.component';
@@ -24,8 +25,39 @@ export class LabelViewComponent implements OnInit, OnDestroy {
   notes: Note[] = [];
   userEmail: string | null = null;
   isSidebarExpanded: boolean = true;
+  isDarkMode: boolean = false;
   private routeSubscription?: Subscription;
   private navigationSubscription?: Subscription;
+
+  lightColorPalette = [
+    { name: 'Default', value: '#ffffff' },
+    { name: 'Red', value: '#f28b82' },
+    { name: 'Orange', value: '#fbbc04' },
+    { name: 'Yellow', value: '#fff475' },
+    { name: 'Green', value: '#ccff90' },
+    { name: 'Teal', value: '#a7ffeb' },
+    { name: 'Blue', value: '#cbf0f8' },
+    { name: 'Dark Blue', value: '#aecbfa' },
+    { name: 'Purple', value: '#d7aefb' },
+    { name: 'Pink', value: '#fdcfe8' },
+    { name: 'Brown', value: '#e6c9a8' },
+    { name: 'Gray', value: '#e8eaed' }
+  ];
+
+  darkColorPalette = [
+    { name: 'Default', value: '#202124' },
+    { name: 'Dark Red', value: '#5c2b29' },
+    { name: 'Dark Orange', value: '#614a19' },
+    { name: 'Dark Yellow', value: '#635d19' },
+    { name: 'Dark Green', value: '#345920' },
+    { name: 'Dark Teal', value: '#16504b' },
+    { name: 'Dark Blue', value: '#2d555e' },
+    { name: 'Dark Navy', value: '#1e3a5f' },
+    { name: 'Dark Purple', value: '#42275e' },
+    { name: 'Dark Pink', value: '#5b2245' },
+    { name: 'Dark Brown', value: '#442f19' },
+    { name: 'Dark Gray', value: '#3c3f43' }
+  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -33,6 +65,7 @@ export class LabelViewComponent implements OnInit, OnDestroy {
     private noteService: NoteService,
     private labelService: LabelService,
     private authService: AuthService,
+    private themeService: ThemeService,
     private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
@@ -46,6 +79,32 @@ export class LabelViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Component initialization happens in constructor via afterNextRender for SSR
+    // Subscribe to theme changes
+    this.themeService.darkMode$.subscribe(isDark => {
+      const previousMode = this.isDarkMode;
+      this.isDarkMode = isDark;
+      
+      if (previousMode !== isDark && this.labelId) {
+        this.loadLabelAndNotes();
+      }
+      
+      this.cdr.detectChanges();
+    });
+  }
+
+  convertColorForDisplay(color: string): string {
+    if (this.isDarkMode) {
+      const lightIndex = this.lightColorPalette.findIndex(c => c.value.toLowerCase() === color.toLowerCase());
+      if (lightIndex !== -1 && this.darkColorPalette[lightIndex]) {
+        return this.darkColorPalette[lightIndex].value;
+      }
+    } else {
+      const darkIndex = this.darkColorPalette.findIndex(c => c.value.toLowerCase() === color.toLowerCase());
+      if (darkIndex !== -1 && this.lightColorPalette[darkIndex]) {
+        return this.lightColorPalette[darkIndex].value;
+      }
+    }
+    return color;
   }
 
   initializeComponent(): void {
@@ -109,15 +168,21 @@ export class LabelViewComponent implements OnInit, OnDestroy {
     this.noteService.getAllNotes().subscribe({
       next: (allNotes) => {
         console.log('Loaded all notes:', allNotes.length);
+        // Convert colors for display based on current theme
+        const notesWithConvertedColors = allNotes.map(note => ({
+          ...note,
+          color: this.convertColorForDisplay(note.color || '#ffffff')
+        }));
+        
         // Then filter by checking which ones have this label
         let checkedCount = 0;
         
-        if (allNotes.length === 0) {
+        if (notesWithConvertedColors.length === 0) {
           this.cdr.detectChanges();
           return;
         }
         
-        allNotes.forEach((note) => {
+        notesWithConvertedColors.forEach((note) => {
           this.labelService.getNoteLabels(note.noteId).subscribe({
             next: (labels) => {
               checkedCount++;

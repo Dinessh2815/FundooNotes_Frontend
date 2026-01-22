@@ -255,3 +255,59 @@
     }
   }
 }
+// Dark Mode Styles
+:host-context(.dark-mode) {
+  .label-view-container {
+    background-color: var(--bg-primary);
+  }
+
+  .main-content {
+    background-color: var(--bg-primary);
+  }
+
+  .label-header {
+    border-bottom-color: var(--border-primary);
+
+    .label-icon {
+      color: var(--text-secondary);
+    }
+
+    h2 {
+      color: var(--text-primary);
+    }
+  }
+
+  .note-card {
+    border-color: var(--border-primary);
+
+    &:hover {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  .note-title {
+    color: var(--text-primary);
+  }
+
+  .note-description {
+    color: var(--text-primary);
+  }
+
+  .icon-btn-small {
+    color: var(--text-secondary);
+
+    &:hover {
+      background-color: rgba(232, 234, 237, 0.08);
+    }
+  }
+
+  .pin-btn {
+    &:hover {
+      background-color: rgba(232, 234, 237, 0.08) !important;
+    }
+  }
+
+  .empty-state {
+    color: var(--text-secondary);
+  }
+}
