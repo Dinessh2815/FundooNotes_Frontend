@@ -13,7 +13,7 @@
   left: 280px;
   right: 0;
   bottom: 0;
-  padding: 32px 80px;
+  padding: 32px 0px 32px 80px;
   overflow-y: auto;
   overflow-x: hidden;
   transition: left 0.2s ease-in-out;
@@ -26,7 +26,7 @@
 // Take a Note
 .take-note-container {
   max-width: 600px;
-  margin: 0 auto 32px;
+  margin: 24px auto 24px auto;
 }
 
 .take-note {
@@ -326,10 +326,31 @@
 }
 
 // Masonry Grid - Google Keep style using CSS columns
-// column-width auto-calculates columns based on available space
 .notes-grid {
-  column-width: 240px;
   column-gap: 16px;
+  
+  // Mobile first: single column
+  column-count: 1;
+  
+  // 2 columns for tablets
+  @media (min-width: 600px) {
+    column-count: 2;
+  }
+  
+  // 3 columns for desktop (default)
+  @media (min-width: 900px) {
+    column-count: 3;
+  }
+  
+  // 4 columns for large screens
+  @media (min-width: 1200px) {
+    column-count: 4;
+  }
+  
+  // 5 columns for extra large screens
+  @media (min-width: 1500px) {
+    column-count: 5;
+  }
 }
 
 // Note Card - True masonry with break-inside: avoid

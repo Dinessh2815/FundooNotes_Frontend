@@ -568,7 +568,9 @@ export class DashboardComponent implements OnInit {
       if (button && isPlatformBrowser(this.platformId)) {
         const rect = button.getBoundingClientRect();
         setTimeout(() => {
-          const dropdown = this.elementRef.nativeElement.querySelector('.color-picker-dropdown');
+          // Find the dropdown within the same note card as the button
+          const noteCard = button.closest('.note-card');
+          const dropdown = noteCard?.querySelector('.color-picker-dropdown') as HTMLElement;
           if (dropdown) {
             dropdown.style.left = `${rect.left}px`;
             dropdown.style.top = `${rect.bottom + 8}px`;
