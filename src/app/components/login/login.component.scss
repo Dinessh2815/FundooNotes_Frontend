@@ -82,6 +82,27 @@
     position: relative;
   }
 
+  .show-password-wrapper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      margin-right: 8px;
+      cursor: pointer;
+    }
+
+    label {
+      font-size: 14px;
+      color: var(--text-primary);
+      cursor: pointer;
+      user-select: none;
+    }
+  }
+
   .forgot-password {
     margin-top: 8px;
     margin-bottom: 24px;

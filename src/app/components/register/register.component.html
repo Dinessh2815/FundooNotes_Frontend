@@ -45,6 +45,7 @@
             class="form-input"
             [class.error]="email?.invalid && email?.touched"
           />
+          <p class="help-text">You can use letters, numbers & periods</p>
           <div class="error-message" *ngIf="email?.invalid && email?.touched">
             <span *ngIf="email?.errors?.['required']">Email is required</span>
             <span *ngIf="email?.errors?.['email']">Please enter a valid email address</span>
@@ -64,6 +65,7 @@
             <div class="error-message" *ngIf="password?.invalid && password?.touched">
               <span *ngIf="password?.errors?.['required']">Password is required</span>
               <span *ngIf="password?.errors?.['minlength']">Use 8 or more characters</span>
+              <span *ngIf="password?.errors?.['pattern']">Password must include uppercase, lowercase, number & symbol</span>
             </div>
           </div>
 

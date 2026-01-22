@@ -36,6 +36,16 @@
         </div>
       </div>
 
+      <div class="show-password-wrapper">
+        <input
+          type="checkbox"
+          id="showPassword"
+          [(ngModel)]="showPassword"
+          [ngModelOptions]="{standalone: true}"
+        />
+        <label for="showPassword">Show Password</label>
+      </div>
+
       <div class="forgot-password">
         <a routerLink="/forgot-password" class="forgot-link">Forgot Password?</a>
       </div>
