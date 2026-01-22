@@ -13,7 +13,7 @@
   left: 280px;
   right: 0;
   bottom: 0;
-  padding: 32px 80px;
+  padding: 32px 80px 32px 80px;
   overflow-y: auto;
   overflow-x: hidden;
   transition: left 0.2s ease-in-out;
@@ -314,7 +314,7 @@
 // Notes Section
 .notes-section {
   max-width: 100%;
-  margin: 0 0 32px 0;
+  margin: 0 auto 32px auto;
 
   .section-title {
     font-size: 11px;
@@ -327,10 +327,11 @@
 
 // Masonry Grid - Google Keep style using CSS columns
 .notes-grid {
+  //padding-left: 100px ;
   column-gap: 16px;
   
   // Default: 3 columns for all desktop screens
-  column-count: 3;
+  column-count: 4;
   
   // Mobile: single column
   @media (max-width: 599px) {
