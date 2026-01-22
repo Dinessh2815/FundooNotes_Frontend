@@ -250,8 +250,9 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   padding: 8px 0;
   min-width: 200px;
+  max-height: 200px;
+  overflow-y: auto;
   z-index: 10000 !important;
-  top: 7rem;
 
   &.position-below {
     /* Positioning handled by TypeScript */
@@ -261,6 +262,10 @@
     background: #2d2e30;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
   }
+}
+
+.modal-content .more-dropdown {
+  top: 12rem !important;
 }
 
 .more-menu-item {
