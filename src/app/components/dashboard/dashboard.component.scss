@@ -10,16 +10,16 @@
 .main-content {
   position: fixed;
   top: 64px;
-  left: 280px;
+  left: 300px;
   right: 0;
   bottom: 0;
-  padding: 32px 0px 32px 80px;
+  padding: 32px 80px;
   overflow-y: auto;
   overflow-x: hidden;
   transition: left 0.2s ease-in-out;
 
   &.sidebar-collapsed {
-    left: 80px;
+    left: 200px;
   }
 }
 
@@ -327,6 +327,9 @@
 
 // Masonry Grid - Google Keep style using CSS columns
 .notes-grid {
+  
+  margin-left: 0rem;
+  margin-right: -200px;
   column-gap: 16px;
   
   // Mobile first: single column
