@@ -4,6 +4,7 @@
     [userEmail]="userEmail" 
     [hasActiveFilter]="hasActiveFilter()"
     (toggleSidebar)="toggleSidebar()"
+    (toggleView)="handleViewToggle()"
     (searchQuery)="onSearchQuery($event)"
     (filterByLabel)="onFilterByLabel($event)"
     (filterByColor)="onFilterByColor($event)"
@@ -14,7 +15,7 @@
   <app-sidebar [isExpanded]="isSidebarExpanded"></app-sidebar>
 
   <!-- Main Content -->
-  <main class="main-content" [class.sidebar-collapsed]="!isSidebarExpanded">
+  <main class="main-content" [class.sidebar-collapsed]="!isSidebarExpanded" [class.list-view]="isListView">
     <!-- Take a Note -->
     <div class="take-note-container">
       <div class="take-note" *ngIf="!isCreateNoteExpanded" (click)="expandCreateNote()">

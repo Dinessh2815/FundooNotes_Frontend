@@ -139,6 +139,9 @@ export class DashboardComponent implements OnInit {
   searchFilter: string = '';
   labelFilter: number | null = null;
   colorFilter: string | null = null;
+  
+  // View toggle
+  isListView: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -592,6 +595,11 @@ export class DashboardComponent implements OnInit {
 
   toggleSidebar(): void {
     this.isSidebarExpanded = !this.isSidebarExpanded;
+  }
+
+  handleViewToggle(): void {
+    this.isListView = !this.isListView;
+    console.log('List view toggled:', this.isListView);
   }
 
   @HostListener('document:click', ['$event'])

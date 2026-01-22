@@ -327,7 +327,6 @@
 
 // Masonry Grid - Google Keep style using CSS columns
 .notes-grid {
-  //padding-left: 100px ;
   column-gap: 16px;
   
   // Default: 3 columns for all desktop screens
@@ -351,6 +350,28 @@
   // Extra large screens: 5 columns
   @media (min-width: 1500px) {
     column-count: 5;
+  }
+}
+
+// List View - Full width stacked layout
+.main-content.list-view {
+  .notes-section {
+    max-width: 600px;
+  }
+  
+  .notes-grid {
+    column-count: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    column-gap: 0 !important;
+  }
+  
+  .note-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 0 !important;
+    display: block !important;
   }
 }
 

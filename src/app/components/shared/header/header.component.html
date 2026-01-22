@@ -88,6 +88,14 @@
         <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z" fill="currentColor"/>
       </svg>
     </button>
+    <button class="icon-btn" [attr.aria-label]="isListView ? 'Grid view' : 'List view'" (click)="toggleViewMode()" [title]="isListView ? 'Grid view' : 'List view'">
+      <svg *ngIf="!isListView" width="24" height="24" viewBox="0 0 24 24">
+        <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" fill="currentColor"/>
+      </svg>
+      <svg *ngIf="isListView" width="24" height="24" viewBox="0 0 24 24">
+        <path d="M4 14h4v-4H4v4zm0 5h4v-4H4v4zM4 9h4V5H4v4zm5 5h12v-4H9v4zm0 5h12v-4H9v4zM9 5v4h12V5H9z" fill="currentColor"/>
+      </svg>
+    </button>
     <button class="icon-btn" aria-label="Toggle dark mode" (click)="toggleDarkMode()">
       <svg *ngIf="!isDarkMode" width="24" height="24" viewBox="0 0 24 24">
         <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z" fill="currentColor"/>
