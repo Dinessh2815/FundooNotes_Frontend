@@ -152,12 +152,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-secondary);
+  color: #202124;
   transition: background-color 0.2s;
   position: relative;
 
+  :host-context(.dark-mode) & {
+    color: #9aa0a6;
+  }
+
   &:hover {
-    background-color: var(--bg-hover);
+    background-color: rgba(32, 33, 36, 0.08);
+
+    :host-context(.dark-mode) & {
+      background-color: rgba(232, 234, 237, 0.08);
+    }
   }
 }
 
@@ -167,9 +175,7 @@
 }
 
 .color-picker-dropdown {
-  position: absolute;
-  bottom: 40px;
-  left: 0;
+  position: fixed !important;
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
@@ -178,8 +184,13 @@
   flex-direction: row;
   flex-wrap: wrap;
   gap: 6px;
-  z-index: 1000;
+  z-index: 10000 !important;
   width: 216px;
+
+  :host-context(.dark-mode) & {
+    background: #2d2e30;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  }
 }
 
 .color-option {
@@ -212,6 +223,77 @@
   svg {
     width: 18px;
     height: 18px;
+  }
+}
+
+// Disabled Buttons
+.icon-btn-small.disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  pointer-events: none;
+  color: #5f6368;
+
+  :host-context(.dark-mode) & {
+    color: #9aa0a6;
+  }
+}
+
+// More Menu
+.more-menu-wrapper {
+  position: relative;
+}
+
+.more-dropdown {
+  position: fixed !important;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding: 8px 0;
+  min-width: 200px;
+  z-index: 10000 !important;
+  top: 7rem;
+
+  &.position-below {
+    /* Positioning handled by TypeScript */
+  }
+
+  :host-context(.dark-mode) & {
+    background: #2d2e30;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.more-menu-item {
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-size: 14px;
+  color: #202124;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: block;
+
+  :host-context(.dark-mode) & {
+    color: #e8eaed;
+  }
+
+  &:hover:not(.disabled) {
+    background-color: #f1f3f4;
+
+    :host-context(.dark-mode) & {
+      background-color: #3c4043;
+    }
+  }
+
+  &.disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+  }
+
+  span {
+    display: block;
   }
 }
 
@@ -428,7 +510,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 2000;
 }
 
 .modal-content {
@@ -444,6 +526,7 @@
   display: flex;
   flex-direction: column;
   transition: background-color 0.3s ease;
+  z-index: 2001;
 
   .modal-header {
     display: flex;
@@ -607,7 +690,6 @@
 
     .color-picker-dropdown {
       bottom: auto;
-      top: 40px;
     }
   }
 }

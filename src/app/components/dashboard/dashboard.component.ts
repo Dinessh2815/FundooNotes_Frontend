@@ -123,6 +123,10 @@ export class DashboardComponent implements OnInit {
   editNoteData: UpdateNoteRequest = {};
   showColorPicker: boolean = false;
   
+  // More menu
+  showMoreMenu: boolean = false;
+  activeMoreMenuNoteId: number | null = null;
+  
   // Label picker
   showLabelPicker: boolean = false;
   labelPickerNoteId: number | null = null;
@@ -558,8 +562,25 @@ export class DashboardComponent implements OnInit {
   toggleColorPicker(event?: Event): void {
     if (event) {
       event.stopPropagation();
+      const target = event.target as HTMLElement;
+      const button = target.closest('.icon-btn-small') as HTMLElement;
+      
+      if (button && isPlatformBrowser(this.platformId)) {
+        const rect = button.getBoundingClientRect();
+        setTimeout(() => {
+          const dropdown = this.elementRef.nativeElement.querySelector('.color-picker-dropdown');
+          if (dropdown) {
+            dropdown.style.left = `${rect.left}px`;
+            dropdown.style.top = `${rect.bottom + 8}px`;
+          }
+        }, 0);
+      }
     }
     this.showColorPicker = !this.showColorPicker;
+    if (this.showColorPicker) {
+      this.showMoreMenu = false;
+      this.activeMoreMenuNoteId = null;
+    }
   }
 
   logout(): void {
@@ -584,6 +605,18 @@ export class DashboardComponent implements OnInit {
       }
     }
     
+    // Close more menu when clicking outside
+    if (this.showMoreMenu) {
+      const moreDropdown = this.elementRef.nativeElement.querySelector('.more-dropdown');
+      const moreBtn = this.elementRef.nativeElement.querySelector('.more-menu-wrapper button');
+      const clickedInside = moreDropdown?.contains(event.target) || moreBtn?.contains(event.target);
+      
+      if (!clickedInside) {
+        this.showMoreMenu = false;
+        this.activeMoreMenuNoteId = null;
+      }
+    }
+    
     // Close create note form when clicking outside
     if (this.isCreateNoteExpanded) {
       const createForm = this.elementRef.nativeElement.querySelector('.create-note-form');
@@ -596,10 +629,78 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  toggleMoreMenu(note: Note, event: Event): void {
+    event.stopPropagation();
+    const clickEvent = event as MouseEvent;
+    
+    if (this.showMoreMenu && this.activeMoreMenuNoteId === note.noteId) {
+      this.showMoreMenu = false;
+      this.activeMoreMenuNoteId = null;
+    } else {
+      this.showMoreMenu = true;
+      this.activeMoreMenuNoteId = note.noteId;
+      this.showColorPicker = false;
+      
+      if (isPlatformBrowser(this.platformId)) {
+        setTimeout(() => {
+          const button = clickEvent.target as HTMLElement;
+          const buttonElement = button.closest('.icon-btn-small') as HTMLElement;
+          
+          if (buttonElement) {
+            const rect = buttonElement.getBoundingClientRect();
+            const dropdown = this.elementRef.nativeElement.querySelector('.more-dropdown');
+            
+            if (dropdown) {
+              const isInModal = buttonElement.closest('.modal-content') !== null;
+              
+              dropdown.style.right = `${window.innerWidth - rect.right}px`;
+              dropdown.style.left = 'auto';
+              
+              if (isInModal) {
+                dropdown.style.top = 'auto';
+                dropdown.style.bottom = `${window.innerHeight - rect.top + 8}px`;
+              } else {
+                const dropdownHeight = 300;
+                
+                if (rect.top - dropdownHeight - 8 < 0) {
+                  dropdown.style.bottom = 'auto';
+                  dropdown.style.top = `${rect.bottom + 8}px`;
+                } else {
+                  dropdown.style.top = 'auto';
+                  dropdown.style.bottom = `${window.innerHeight - rect.top + 8}px`;
+                }
+              }
+            }
+          }
+        }, 0);
+      }
+    }
+  }
+
   onModalOverlayClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
     if (target.classList.contains('modal-overlay')) {
       this.closeEditNote();
+    }
+  }
+  
+  onModalContentClick(event: MouseEvent): void {
+    // Close dropdowns when clicking anywhere in the modal content
+    const target = event.target as HTMLElement;
+    const isColorButton = target.closest('.color-btn');
+    const isColorPicker = target.closest('.color-picker-dropdown');
+    const isMoreButton = target.closest('.more-menu-wrapper button');
+    const isMoreDropdown = target.closest('.more-dropdown');
+    
+    // Close color picker if clicking outside of it
+    if (!isColorButton && !isColorPicker && this.showColorPicker) {
+      this.showColorPicker = false;
+    }
+    
+    // Close more menu if clicking outside of it
+    if (!isMoreButton && !isMoreDropdown && this.showMoreMenu) {
+      this.showMoreMenu = false;
+      this.activeMoreMenuNoteId = null;
     }
   }
 }
