@@ -26,6 +26,7 @@ export class DashboardComponent implements OnInit {
   otherNotes: Note[] = [];
   isSidebarExpanded: boolean = true;
   isDarkMode: boolean = false;
+  isListView: boolean = false;
   
   // Color palette - Google Keep colors
   lightColorPalette = [
@@ -590,6 +591,10 @@ export class DashboardComponent implements OnInit {
 
   toggleSidebar(): void {
     this.isSidebarExpanded = !this.isSidebarExpanded;
+  }
+
+  handleViewToggle(isListView: boolean): void {
+    this.isListView = isListView;
   }
 
   @HostListener('document:click', ['$event'])

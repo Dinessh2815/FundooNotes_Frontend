@@ -7,7 +7,8 @@
     (searchQuery)="onSearchQuery($event)"
     (filterByLabel)="onFilterByLabel($event)"
     (filterByColor)="onFilterByColor($event)"
-    (clearFilters)="onClearFilters()">
+    (clearFilters)="onClearFilters()"
+    (toggleView)="handleViewToggle($event)">
   </app-header>
 
   <!-- Sidebar -->
@@ -112,7 +113,7 @@
     <!-- Pinned Notes -->
     <div class="notes-section" *ngIf="pinnedNotes.length > 0">
       <h3 class="section-title">PINNED</h3>
-      <div class="notes-grid">
+      <div class="notes-grid" [class.list-view]="isListView">
         <div *ngFor="let note of pinnedNotes" class="note-card" [style.background-color]="note.color" (click)="startEditNote(note)">
           <div class="note-header">
             <h4 class="note-title">{{ note.title }}</h4>
@@ -233,7 +234,7 @@
     <!-- Other Notes -->
     <div class="notes-section" *ngIf="otherNotes.length > 0">
       <h3 class="section-title" *ngIf="pinnedNotes.length > 0">OTHERS</h3>
-      <div class="notes-grid">
+      <div class="notes-grid" [class.list-view]="isListView">
         <div *ngFor="let note of otherNotes" class="note-card" [style.background-color]="note.color" (click)="startEditNote(note)">
           <div class="note-header">
             <h4 class="note-title">{{ note.title }}</h4>

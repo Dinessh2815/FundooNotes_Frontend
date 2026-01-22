@@ -24,8 +24,10 @@ export class HeaderComponent {
   @Output() filterByLabel = new EventEmitter<number>();
   @Output() filterByColor = new EventEmitter<string>();
   @Output() clearFilters = new EventEmitter<void>();
+  @Output() toggleView = new EventEmitter<boolean>();
 
   searchText: string = '';
+  isListView: boolean = false;
   showSearchPreview: boolean = false;
   showProfileDropdown: boolean = false;
   labels: Label[] = [];
@@ -177,6 +179,11 @@ export class HeaderComponent {
 
   toggleDarkMode(): void {
     this.themeService.toggleDarkMode();
+  }
+
+  toggleViewMode(): void {
+    this.isListView = !this.isListView;
+    this.toggleView.emit(this.isListView);
   }
 
   refreshPage(): void {
