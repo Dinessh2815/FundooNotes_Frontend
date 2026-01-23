@@ -154,6 +154,13 @@ export class HeaderComponent implements OnDestroy {
     }
   }
 
+  onSearchKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Enter' && this.searchText.trim()) {
+      this.showSearchPreview = false;
+      this.searchQuery.emit(this.searchText.trim());
+    }
+  }
+
   searchNotes(): void {
     this.noteService.getAllNotes().subscribe({
       next: (notes: Note[]) => {
