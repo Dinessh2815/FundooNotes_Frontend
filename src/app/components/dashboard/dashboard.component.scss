@@ -749,10 +749,6 @@
   }
 }
 
-// Responsive Design - Sidebar and padding adjustments only
-// CSS column-width handles column count automatically
-
-// Tablet and smaller screens - collapsed sidebar
 @media (max-width: 1024px) {
   .main-content {
     left: 64px;
