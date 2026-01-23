@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, Output, Inject, PLATFORM_ID, OnDestroy } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
@@ -16,7 +16,19 @@ import { Note } from '../../../models/note.model';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnDestroy {
+  screenIsMobile: boolean = false;
+  showMobileSearch: boolean = false;
+  
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private labelService: LabelService,
+    private noteService: NoteService,
+    private themeService: ThemeService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
+
   @Input() userEmail: string | null = null;
   @Input() hasActiveFilter: boolean = false;
   @Output() toggleSidebar = new EventEmitter<void>();
@@ -80,15 +92,12 @@ export class HeaderComponent {
     return color;
   }
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private labelService: LabelService,
-    private noteService: NoteService,
-    private themeService: ThemeService
-  ) {}
-
   ngOnInit(): void {
+    this.updateScreenSize();
+    if (isPlatformBrowser(this.platformId)) {
+      window.addEventListener('resize', this.updateScreenSize.bind(this));
+    }
+    
     // Only load labels if user is authenticated
     if (this.userEmail) {
       this.loadLabels();
@@ -98,6 +107,21 @@ export class HeaderComponent {
     this.themeService.darkMode$.subscribe(isDark => {
       this.isDarkMode = isDark;
     });
+  }
+
+  ngOnDestroy(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      window.removeEventListener('resize', this.updateScreenSize.bind(this));
+    }
+  }
+
+  updateScreenSize(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.screenIsMobile = window.innerWidth < 480;
+      if (!this.screenIsMobile) {
+        this.showMobileSearch = false;
+      }
+    }
   }
 
   loadLabels(): void {

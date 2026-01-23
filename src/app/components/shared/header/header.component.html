@@ -11,74 +11,54 @@
   
   <div class="header-center">
     <div class="search-container">
-      <div class="search-bar" [class.active]="showSearchPreview">
-        <svg width="24" height="24" viewBox="0 0 24 24" class="search-icon">
-          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="currentColor"/>
-        </svg>
-        <input 
-          type="text" 
-          placeholder="Search" 
-          class="search-input"
-          [(ngModel)]="searchText"
-          (focus)="onSearchFocus()"
-          (input)="onSearchInput()">
-        <button *ngIf="searchText" class="close-search-btn" (click)="closeSearch()" aria-label="Clear search">
-          <svg width="20" height="20" viewBox="0 0 24 24">
-            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" fill="currentColor"/>
+      <!-- Mobile: Toggle between search icon and search bar -->
+      <ng-container *ngIf="screenIsMobile; else desktopSearch">
+        <div class="search-bar" [class.mobile-collapsed]="!showMobileSearch" [class.active]="showSearchPreview">
+          <button class="icon-btn" aria-label="Search" (click)="showMobileSearch = !showMobileSearch" *ngIf="!showMobileSearch">
+            <svg width="24" height="24" viewBox="0 0 24 24" class="search-icon">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="currentColor"/>
+            </svg>
+          </button>
+          <input 
+            *ngIf="showMobileSearch"
+            type="text" 
+            placeholder="Search" 
+            class="search-input"
+            [(ngModel)]="searchText"
+            (focus)="onSearchFocus()"
+            (input)="onSearchInput()"
+            autofocus>
+          <button *ngIf="searchText && showMobileSearch" class="close-search-btn" (click)="closeSearch()" aria-label="Clear search">
+            <svg width="20" height="20" viewBox="0 0 24 24">
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" fill="currentColor"/>
+            </svg>
+          </button>
+        </div>
+      </ng-container>
+      <ng-template #desktopSearch>
+        <div class="search-bar" [class.active]="showSearchPreview">
+          <svg width="24" height="24" viewBox="0 0 24 24" class="search-icon">
+            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="currentColor"/>
           </svg>
-        </button>
-        <button *ngIf="hasActiveFilter && !searchText" class="close-search-btn filter-close" (click)="clearAllFilters()" aria-label="Clear filter" title="Clear filter">
-          <svg width="20" height="20" viewBox="0 0 24 24">
-            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" fill="currentColor"/>
-          </svg>
-        </button>
-      </div>
-
-      <!-- Search Preview Dropdown -->
-      <div class="search-preview" *ngIf="showSearchPreview">
-        <div class="preview-section" *ngIf="labels.length > 0">
-          <div class="preview-header">Labels</div>
-          <div class="preview-items">
-            <button 
-              *ngFor="let label of labels" 
-              class="preview-item label-item"
-              (click)="selectLabel(label.labelId)">
-              <svg width="20" height="20" viewBox="0 0 24 24">
-                <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z" fill="currentColor"/>
-              </svg>
-              <span>{{ label.name }}</span>
-            </button>
-          </div>
+          <input 
+            type="text" 
+            placeholder="Search" 
+            class="search-input"
+            [(ngModel)]="searchText"
+            (focus)="onSearchFocus()"
+            (input)="onSearchInput()">
+          <button *ngIf="searchText" class="close-search-btn" (click)="closeSearch()" aria-label="Clear search">
+            <svg width="20" height="20" viewBox="0 0 24 24">
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" fill="currentColor"/>
+            </svg>
+          </button>
+          <button *ngIf="hasActiveFilter && !searchText" class="close-search-btn filter-close" (click)="clearAllFilters()" aria-label="Clear filter" title="Clear filter">
+            <svg width="20" height="20" viewBox="0 0 24 24">
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" fill="currentColor"/>
+            </svg>
+          </button>
         </div>
-
-        <div class="preview-section">
-          <div class="preview-header">Colours</div>
-          <div class="color-grid">
-            <button 
-              *ngFor="let color of colorPalette" 
-              class="color-preview"
-              [style.background-color]="color.value"
-              [title]="color.name"
-              (click)="selectColor(color.value)">
-            </button>
-          </div>
-        </div>
-
-        <div class="preview-section" *ngIf="filteredNotes.length > 0">
-          <div class="preview-header">Notes</div>
-          <div class="preview-items">
-            <button 
-              *ngFor="let note of filteredNotes" 
-              class="preview-item note-item"
-              (click)="selectNote(note)">
-              <svg width="20" height="20" viewBox="0 0 24 24">
-                <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z" fill="currentColor"/>
-              </svg>
-              <span>{{ note.title || 'Untitled' }}</span>
-            </button>
-          </div>
-        </div>
-      </div>
+      </ng-template>
     </div>
   </div>
 
@@ -108,7 +88,6 @@
       <button class="icon-btn user-btn" (click)="toggleProfileDropdown()" aria-label="Account">
         <span class="user-initial">{{ (userEmail || 'U')[0].toUpperCase() }}</span>
       </button>
-      
       <!-- Profile Dropdown -->
       <div class="profile-dropdown" *ngIf="showProfileDropdown">
         <div class="dropdown-email">{{ userEmail }}</div>

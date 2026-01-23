@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit {
   notes: Note[] = [];
   pinnedNotes: Note[] = [];
   otherNotes: Note[] = [];
-  isSidebarExpanded: boolean = true;
+  isSidebarExpanded: boolean = false; // Always start collapsed
   isDarkMode: boolean = false;
   
   // Color palette - Google Keep colors
@@ -595,6 +595,15 @@ export class DashboardComponent implements OnInit {
 
   toggleSidebar(): void {
     this.isSidebarExpanded = !this.isSidebarExpanded;
+  }
+
+  ngAfterViewInit(): void {
+    // Collapse sidebar by default on small screens
+    if (isPlatformBrowser(this.platformId)) {
+      if (window.innerWidth < 1024) {
+        this.isSidebarExpanded = false;
+      }
+    }
   }
 
   handleViewToggle(): void {

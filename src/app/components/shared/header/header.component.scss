@@ -463,29 +463,125 @@
 @media (max-width: 480px) {
   .header {
     padding: 4px 2px;
+    gap: 2px;
   }
   
-  .header-center {
-    padding: 0 4px;
+  .header-left {
+    gap: 2px;
+    flex-shrink: 0;
   }
-  
-  .search-bar {
-    padding: 0 6px;
-    height: 34px;
+
+  .logo {
+    width: 32px;
+    height: 32px;
   }
-  
-  .search-icon {
-    margin-right: 4px;
-  }
-  
-  .menu-btn, .icon-btn {
-    width: 34px;
-    height: 34px;
-    padding: 5px;
-    
+
+  .menu-btn {
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+
     svg {
       width: 18px;
       height: 18px;
+    }
+  }
+
+  .header-center {
+    padding: 0 2px;
+    flex: 1;
+    max-width: none;
+  }
+  
+  .search-bar {
+    padding: 0 4px;
+    height: 32px;
+  }
+
+  .search-bar.mobile-collapsed {
+    width: 32px;
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+
+    .search-input {
+      display: none;
+    }
+
+    .close-search-btn {
+      display: none;
+    }
+
+    .search-icon {
+      display: flex;
+    }
+  }
+  
+  .search-icon {
+    margin-right: 0;
+    width: 18px;
+    height: 18px;
+  }
+
+  .search-input {
+    font-size: 12px;
+  }
+
+  .header-right {
+    display: flex;
+    gap: 1px;
+    flex-shrink: 0;
+  }
+
+  .icon-btn {
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+    flex-shrink: 0;
+    
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .profile-dropdown-container {
+    position: relative;
+  }
+
+  .profile-dropdown {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    left: auto;
+    min-width: 220px;
+  }
+
+  .user-btn {
+    padding: 3px;
+  }
+
+  .user-initial {
+    font-size: 11px;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+  }
+
+  .dropdown-email {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .dropdown-logout {
+    padding: 8px 12px;
+    font-size: 12px;
+    gap: 8px;
+
+    svg {
+      width: 16px;
+      height: 16px;
     }
   }
 }

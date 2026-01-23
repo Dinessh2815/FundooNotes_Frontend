@@ -13,9 +13,11 @@ import { EditLabelsModalComponent } from '../../edit-labels-modal/edit-labels-mo
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
+
 export class SidebarComponent implements OnInit {
-  @Input() isExpanded: boolean = true;
-  
+  @Input() isExpanded: boolean = false; // Always start collapsed
+  isTempExpanded: boolean = false; // For hover
+
   labels: Label[] = [];
   showEditLabelsModal: boolean = false;
 
@@ -35,6 +37,15 @@ export class SidebarComponent implements OnInit {
       // Force initial load
       this.loadLabels();
     }
+
+  }
+
+  onSidebarMouseEnter(): void {
+    this.isTempExpanded = true;
+  }
+
+  onSidebarMouseLeave(): void {
+    this.isTempExpanded = false;
   }
 
   isAuthenticated(): boolean {

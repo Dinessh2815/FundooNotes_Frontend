@@ -14,6 +14,11 @@
 
   &.collapsed {
     width: 80px;
+
+    &:hover {
+      width: 280px;
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+    }
   }
 }
 
@@ -82,13 +87,14 @@
 .labels-section {
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid var(--border-color);
+  transition: display 0.2s ease-in-out;
 
   .labels-header {
     padding: 8px 24px;
     font-size: 11px;
     font-weight: 600;
-    color: #5f6368;
+    color: var(--text-secondary);
     letter-spacing: 0.8px;
   }
 
@@ -105,10 +111,36 @@
   svg {
     margin: 0;
   }
+
+  span {
+    display: none;
+  }
 }
 
 .sidebar.collapsed .labels-section {
   display: none;
+}
+
+.sidebar.collapsed .labels-section .labels-header {
+  display: none;
+}
+
+/* Show text on hover even when collapsed */
+.sidebar.collapsed:hover .nav-item {
+  justify-content: flex-start;
+  padding: 12px 24px;
+
+  span {
+    display: inline;
+  }
+}
+
+.sidebar.collapsed:hover .labels-section {
+  display: block;
+}
+
+.sidebar.collapsed:hover .labels-section .labels-header {
+  display: block;
 }
 
 // Responsive Design
